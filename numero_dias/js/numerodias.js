@@ -10,7 +10,7 @@ function calculateDaysSinceEpoch(date) {
         maxdays,
         output,
         FORMATO = "Por favor, introducir la fecha en el formato solicitado",
-        NOVALIDA = "La fecha introducida no es válida";
+        NOVALIDA = "La fecha introducida no es vÃ¡lida";
 
     switch (monthLetters) {
     case "jan":
@@ -70,13 +70,15 @@ function calculateDaysSinceEpoch(date) {
         break;
     }
 
-    if (monthNumber === 0 || year <= 0 || (day < 1 || day > 31)) {
+    debugger;
+
+    if ((monthNumber === 0) || (year <= 0) || (day < 1 || day > 31)) {
         output = FORMATO;
     } else {
-        if (year < 1970 || day > maxdays) {
+        if ((year < 1970) || (day > maxdays)) {
             output = NOVALIDA;
         } else {
-            while ((firstYear <= year) && (firstMonth <= monthNumber) && (firstDay < day)) {
+            while ((firstYear <= year) && (firstMonth < monthNumber)) {
                 
                 if (firstYear === year && firstMonth === monthNumber) {
                     contDays += day - firstDay;
@@ -109,7 +111,7 @@ function calculateDaysSinceEpoch(date) {
                     default:
                         monthNumber = 0;
                         break;
-                    } 
+                    }
                     contDays += maxdays;
                     firstMonth += 1;
                     while (firstMonth === 13) {
@@ -119,7 +121,7 @@ function calculateDaysSinceEpoch(date) {
                 }
                 
             }
-            output = contDays;
+            output = contDays + day;
         }
     }
     return output;
