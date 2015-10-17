@@ -19,11 +19,7 @@ function calculateDaysSinceEpoch(date) {
         break;
     case "feb":
         monthNumber = 2;
-        if (year % 4 && (year % 400 || !(year % 100))) {
-            maxdays = 28;
-        } else {
-            maxdays = 29;
-        }
+        maxdays = (year % 4 && (year % 400 || !(year % 100))) ? 28 : 29;
         break;
     case "mar":
         monthNumber = 3;
@@ -77,7 +73,7 @@ function calculateDaysSinceEpoch(date) {
             output = NOVALIDA;
         } else {
             while ((firstYear <= year) && (firstMonth <= monthNumber) && (firstDay < day)) {
-                
+
                 if (firstYear === year && firstMonth === monthNumber) {
                     contDays += day - firstDay;
                 } else {
@@ -90,15 +86,12 @@ function calculateDaysSinceEpoch(date) {
                     case 10:
                     case 12:
                         maxdays = 31;
+                        break;
 
                     case 2:
-                        if (firstYear % 4 && (firstYear % 400 || !(firstYear % 100))) {
-                            maxdays = 28;
-                        } else {
-                            maxdays = 29;
-                        }
+                        maxdays = (year % 4 && (year % 400 || !(year % 100))) ? 28 : 29;
                         break;
-                    
+
                     case 4:
                     case 6:
                     case 9:
@@ -109,15 +102,14 @@ function calculateDaysSinceEpoch(date) {
                     default:
                         monthNumber = 0;
                         break;
-                    } 
+                    }
                     contDays += maxdays;
                     firstMonth += 1;
                     while (firstMonth === 13) {
-                    firstYear += 1;
-                    firstMonth = 1;
+                        firstYear += 1;
+                        firstMonth = 1;
                     }
                 }
-                
             }
             output = contDays;
         }
