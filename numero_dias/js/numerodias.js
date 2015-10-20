@@ -104,11 +104,7 @@ function calculateDaysSinceEpoch(date) {
                         break;
                     }
                     contDays += maxdays;
-                    firstMonth += 1;
-                    while (firstMonth === 13) {
-                        firstYear += 1;
-                        firstMonth = 1;
-                    }
+                    ((firstMonth + 1) === 13) ? firstYear += 1; firstMonth = 1; : firstMonth += 1;;
                 }
             }
             output = contDays;
