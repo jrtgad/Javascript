@@ -66,12 +66,15 @@ function calculateDaysSinceEpoch(date) {
         break;
     }
 
-    if (monthNumber === 0 || year <= 0 || (day < 1 || day > 31)) {
+    debugger;
+
+    if ((monthNumber === 0) || (year <= 0) || (day < 1 || day > 31)) {
         output = FORMATO;
     } else {
-        if (year < 1970 || day > maxdays) {
+        if ((year < 1970) || (day > maxdays)) {
             output = NOVALIDA;
         } else {
+<<<<<<< HEAD
             while ((firstYear <= year) && (firstMonth <= monthNumber) && (firstDay < day)) {
 
                 if (firstYear === year && firstMonth === monthNumber) {
@@ -105,9 +108,49 @@ function calculateDaysSinceEpoch(date) {
                     }
                     contDays += maxdays;
                     ((firstMonth + 1) === 13) ? firstYear += 1; firstMonth = 1; : firstMonth += 1;;
+=======
+            while ((firstYear < year) || (firstMonth < monthNumber)) {
+                switch (firstMonth) {
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    maxdays = 31;
+                    break;
+
+                case 2:
+                    if (firstYear % 4 && (!(firstYear % 100) || (firstYear % 400))) {
+                        maxdays = 28;
+                    } else {
+                        maxdays = 29;
+                    }
+                    break;
+
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    maxdays = 30;
+                    break;
+
+                default:
+                    monthNumber = 0;
+                    break;
+                }
+
+                contDays += maxdays;
+                firstMonth += 1;
+
+                if (firstMonth === 13) {
+                firstYear += 1;
+                firstMonth = 1;
+>>>>>>> 6ea34053459a207a862c0186b7f5378cbb6cf306
                 }
             }
-            output = contDays;
+            output = contDays + day -1;
         }
     }
     return output;
