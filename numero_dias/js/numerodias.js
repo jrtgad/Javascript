@@ -19,11 +19,7 @@ function calculateDaysSinceEpoch(date) {
         break;
     case "feb":
         monthNumber = 2;
-        if (year % 4 && (year % 400 || !(year % 100))) {
-            maxdays = 28;
-        } else {
-            maxdays = 29;
-        }
+        maxdays = (year % 4 && (year % 400 || !(year % 100))) ? 28 : 29;
         break;
     case "mar":
         monthNumber = 3;
@@ -78,47 +74,84 @@ function calculateDaysSinceEpoch(date) {
         if ((year < 1970) || (day > maxdays)) {
             output = NOVALIDA;
         } else {
-            while ((firstYear < year) || (firstMonth < monthNumber)) {
-                switch (firstMonth) {
-                case 1:
-                case 3:
-                case 5:
-                case 7:
-                case 8:
-                case 10:
-                case 12:
-                    maxdays = 31;
-                    break;
+            while ((firstYear <= year) && (firstMonth <= monthNumber) && (firstDay < day)) {
+                if (firstYear === year && firstMonth === monthNumber) {
+                    contDays += day - firstDay;
+                } else {
+                    switch (firstMonth) {
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 7:
+                    case 8:
+                    case 10:
+                    case 12:
+                        maxdays = 31;
+                        break;
 
-                case 2:
-                    if (firstYear % 4 && (!(firstYear % 100) || (firstYear % 400))) {
-                        maxdays = 28;
-                    } else {
-                        maxdays = 29;
+                    case 2:
+                        maxdays = (year % 4 && (year % 400 || !(year % 100))) ? 28 : 29;
+                        break;
+
+                    case 4:
+                    case 6:
+                    case 9:
+                    case 11:
+                        maxdays = 30;
+                        break;
+
+                    default:
+                        monthNumber = 0;
+                        break;
                     }
-                    break;
+                    contDays += maxdays;
+                    if ((firstMonth + 1) === 13) {
+                        firstYear += 1;
+                        firstMonth = 1;
+                    } else {
+                        firstMonth += 1;
+                    }
+                    while ((firstYear < year) || (firstMonth < monthNumber)) {
+                        switch (firstMonth) {
+                        case 1:
+                        case 3:
+                        case 5:
+                        case 7:
+                        case 8:
+                        case 10:
+                        case 12:
+                            maxdays = 31;
+                            break;
 
-                case 4:
-                case 6:
-                case 9:
-                case 11:
-                    maxdays = 30;
-                    break;
+                        case 2:
+                            maxdays = (year % 4 && (year % 400 || !(year % 100))) ? 28 : 29;
+                            break;
 
-                default:
-                    monthNumber = 0;
-                    break;
-                }
+                        case 4:
+                        case 6:
+                        case 9:
+                        case 11:
+                            maxdays = 30;
+                            break;
 
-                contDays += maxdays;
-                firstMonth += 1;
+                        default:
+                            monthNumber = 0;
+                            break;
+                        }
 
-                if (firstMonth === 13) {
-                firstYear += 1;
-                firstMonth = 1;
+                        contDays += maxdays;
+                        if ((firstMonth + 1) === 13) {
+                            firstYear += 1;
+                            firstMonth = 1;
+                        } else {
+                            firstMonth += 1;
+                        }
+                    }
+
+                    output = contDays + day - 1;
                 }
             }
-            output = contDays + day -1;
+            debugger;
         }
     }
     return output;
