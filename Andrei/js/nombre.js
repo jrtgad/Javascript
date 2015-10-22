@@ -1,7 +1,7 @@
 var WEEK_DAYS_ES = "domingo lunes martes miércoles jueves viernes sábado",
     MONTHS_ES = "enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre",
     NEXTLINE = "\n",
-    navigator,
+    SO = (navigator.oscpu).split(";"),
     SBROWSER, SUSRAG = navigator.userAgent;
 
 function completa(nombre, apellido) {
@@ -52,9 +52,9 @@ function completa(nombre, apellido) {
     }
 
     parrafo += NEXTLINE + "Utilizas el navegador " + SBROWSER;
-    parrafo += " en su versión " + navigator.appCodeName + " con el SO " + navigator.oscpu;
+    parrafo += " en su versión " + navigator.appCodeName + " con el SO " + SO[0];
     parrafo += NEXTLINE + "Está trabajando ";
-    parrafo += navigator.online ? "con" : "sin";
+    parrafo += navigator.onLine ? "con" : "sin";
     parrafo += " conexión.";
 
     return parrafo;
