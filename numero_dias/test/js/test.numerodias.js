@@ -5,23 +5,15 @@ describe('Checking days since 1970', function() {
             calculateDaysSinceEpoch("").should.be.equal("Por favor, introducir la fecha en el formato solicitado");
         });
 
-        it('Should return empty for escape characters', function () {
-            checkValueOfWord("\n").should.be.equal("Por favor, introducir la fecha en el formato solicitado");
+        it('Should return empty for escape chars', function () {
+            calculateDaysSinceEpoch("\n").should.be.equal("Por favor, introducir la fecha en el formato solicitado");
         });
 
-        it('should return ! for numbers', function() {
-            checkValueOfWord("1").should.be.equal("! ");
+        it('Should return empty for escpae chars', function () {
+            calculateDaysSinceEpoch("\t").should.be.equal("Por favor, introducir la fecha en el formato solicitado");
         });
 
-        it('Should return ! for non letters characters', function() {
-            checkValueOfWord("#").should.be.equal("! ");
-        });
-
-        it('Should return 01020201 for ABBA', function () {
-            checkValueOfWord("ABBA").should.be.equal("01 02 02 01 ");
-        });
-
-        it('Should return 03 for c', function () {
-            checkValueOfWord("c").should.be.equal("03 ");            
+        it('Should return 9 for "10jan1970"', function () {
+            calculateDaysSinceEpoch("10jan1970").should.be.equal(9);
         });
 });
