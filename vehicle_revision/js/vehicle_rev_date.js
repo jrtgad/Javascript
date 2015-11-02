@@ -1,6 +1,6 @@
 function showVehicleRevisionStatus(queryString) {
     //Recibe ?mat=queryString&rev=queryString
-    var vars        = getVars(queryString),
+    var vars        = getVars(queryString, "mat", "rev"),
         numberplate = vars[0],
         lastrevdate = vars[1],
         today       = new Date(),
@@ -9,17 +9,20 @@ function showVehicleRevisionStatus(queryString) {
         actualYear  = today.getUTCFullYear(),
         actualHour  = today.getHours(),
         greeting    = checkGreeting(actualHour),
-        revisionMsg,
-        osBrowser;
+        osBrowser,
 
-    !validatePlate(numberplate) ? revisionMsg = ERR_MAT :
-    !checkDate(lastrevdate)     ? revisionMsg = ERR_DATE_MAT :
-                                  revisionMsg = revision();
+    revisionMsg = !validatePlate(numberplate)      ? ERR_MAT :
+                  !checkDate(lastrevdate)          ? ERR_DATE_MAT :
+                  needRevision(lastrevdate, today) ? revisionCompany() : NO_REV;
 
     osBrowser += getBrowser(window.navigator.userAgent);
     osBrowser += getOs(window.navigator.userAgent);
 
     return [greeting, revisionMsg, osBrowser];
+}
+
+function needRevision(revDate, actualDate) {
+    
 }
 
 function getBrowser(info) {
@@ -42,13 +45,13 @@ function getOs(info) {
     var os;
 
     if (info.indexOf("Linux") !== -1) {
-        os = "Linux, ";
+        os = "Linux";
     } else if (info.indexOf("Microsoft") !== -1) {
-        os = "Microsoft, ";
+        os = "Microsoft";
     } else if (info.indexOf("Mac") !== -1) {
-        os = "IOS, ";
+        os = "IOS";
     } else if (info.indexOf("Android") !== -1) {
-        os = "Android, ";
+        os = "Android";
     }
 
     return os;
@@ -61,7 +64,7 @@ function checkGreeting(hour) {
     return msg;
 }
 
-function revision() {
+function revisionCompany() {
     var num = Math.floor(Math.random() * 4),
         companies = trim(COMPANIES.split("|"));
     return companies[num];
@@ -74,11 +77,11 @@ function validatePlate(mat) {
     return template.test(mat);
 }
 
-function getVars(queryString) {
-  var value1 = queryString.subString(queryString.indexOf("mat=") + 4,
+function getVars(queryString, var1, var2) {
+  var value1 = queryString.subString(queryString.indexOf(var1) + 4,
                                     queryString.indexOf("&")),
 
-      value2 = queryString.subString(queryString.indexOf("rev=") + 4,
+      value2 = queryString.subString(queryString.indexOf(var2) + 4,
                                     queryString.length);
 
   return [value1, value2];
@@ -98,51 +101,51 @@ function checkDate(date) {
 function monthStringToNumber(month) {
   switch (monthLetters) {
     case "jan":
-        monthNumber = 1;
+        monthNumber = "01";
         maxdays = 31;
         break;
     case "feb":
-        monthNumber = 2;
+        monthNumber = "02";
         maxdays = leap ? 29 : 28;
         break;
     case "mar":
-        monthNumber = 3;
+        monthNumber = "03";
         maxdays = 31;
         break;
     case "apr":
-        monthNumber = 4;
+        monthNumber = "04";
         maxdays = 30;
         break;
     case "may":
-        monthNumber = 5;
+        monthNumber = "05";
         maxdays = 31;
         break;
     case "jun":
-        monthNumber = 6;
+        monthNumber = "06";
         maxdays = 30;
         break;
     case "jul":
-        monthNumber = 7;
+        monthNumber = "07";
         maxdays = 31;
         break;
     case "aug":
-        monthNumber = 8;
+        monthNumber = "08";
         maxdays = 31;
         break;
     case "sep":
-        monthNumber = 9;
+        monthNumber = "09";
         maxdays = 30;
         break;
     case "oct":
-        monthNumber = 10;
+        monthNumber = "10";
         maxdays = 31;
         break;
     case "nov":
-        monthNumber = 11;
+        monthNumber = "11";
         maxdays = 30;
         break;
     case "dec":
-        monthNumber = 12;
+        monthNumber = "12";
         maxdays = 31;
         break;
     default:
