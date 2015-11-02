@@ -1,36 +1,56 @@
-function showVehicleRevisionStatus(string) {
-    //Recibe ?mat=string&rev=string
-  var vars = getVars(string),
+function showVehicleRevisionStatus(queryString) {
+    //Recibe ?mat=queryString&rev=queryString
+    var vars        = getVars(queryString),
         numberplate = vars[0],
         lastrevdate = vars[1],
-        today = new Date(),
-        Actualday = today.getUTCDate(),
+        today       = new Date(),
+        Actualday   = today.getUTCDate(),
         Actualmonth = today.getUTCMonth() + 1,
-        Actualyear = today.getUTCFullYear(),
-        output;
+        Actualyear  = today.getUTCFullYear(),
+        greeting,
+        revisionMsg,
+        osBrowser;
 
-            !validatePlate(numberplate) ? output = ERR_MAT :
-            !checkDates(lastrevdate) ? output = ERR_MAT :
+    !validatePlate(numberplate) ? revisionMsg = ERR_MAT :
+    !checkDate(lastrevdate)     ? revisionMsg = ERR_DATE_MAT :
+    checkDate(lastrevdate)      ? revisionMsg = revision();
 
-    return output;
+    return [greeting, revisionMsg, osBrowser];
+}
+
+
+function revision() {
+    var num = Math.floor(Math.random() * 4),
+        companies = trim(COMPANIES.split("|"));
+    return companies[num];
 }
 
 function validatePlate(mat) {
-  var template = new RegExp("^[0-9]{4}[- ]?[A-Z]{3}$| ^[A-Z]{1,2}-?[0-9]{4}-?[A-Z]{1,2}$",
-                             "i");
-   /*/^[0-9]{4}-?[A-Z]{3}$/  También vale*/
-  return template.test(mat);
+    var template = new RegExp("^[0-9]{4}[- ]?[A-Z]{3}$|^[A-Z]{1,2}-?[0-9]{4}-?[A-Z]{1,2}$",
+                                 "i");
+                                            /*/^[0-9]{4}-?[A-Z]{3}$/  También vale*/
+    return template.test(mat);
 }
 
-function getVars(stringVars) {
-  var value1 = stringVars.subString(stringVars.indexOf("mat=") + 4, stringVars.indexOf("&")),
-      value2 = stringVars.subString(stringVars.indexOf("rev=") + 4, stringVars.length);
+function get(queryString) {
+  var value1 = queryString.subString(queryString.indexOf("mat=") + 4,
+                                    queryString.indexOf("&")),
+
+      value2 = queryString.subString(queryString.indexOf("rev=") + 4,
+                                    queryString.length);
 
   return [value1, value2];
 }
 
 function checkDate(date) {
+    var day = date[0] + date[1],
+        month = monthStringToNumber(date[2] + date[3] + date[4]),
+        year = date[5] + date[6] + date[7] + date[8],
+        msg;
 
+    !month[0] ? msg = false : day > month[1] ? msg = false : msg = true;
+
+    return msg;
 }
 
 function monthStringToNumber(month) {
@@ -85,7 +105,6 @@ function monthStringToNumber(month) {
         break;
     default:
         monthNumber = 0;
-        break;
     }
     return [monthNumber, maxdays];
 }
