@@ -1,26 +1,3 @@
-function showVehicleRevisionStatus(queryString) {
-    //Recibe ?mat=queryString&rev=queryString
-    var vars        = getVars(queryString, "mat", "rev"),
-        numberplate = vars[0],
-        lastrevdate = vars[1],
-        today       = new Date(),
-        actualDay   = today.getUTCDate(),
-        actualMonth = today.getUTCMonth() + 1,
-        actualYear  = today.getUTCFullYear(),
-        actualHour  = today.getHours(),
-        greeting    = checkGreeting(actualHour),
-        osBrowser,
-
-    revisionMsg = !validatePlate(numberplate)      ? ERR_MAT :
-                  !checkDate(lastrevdate)          ? ERR_DATE_MAT :
-                  needRevision(lastrevdate, today) ? revisionCompany() : NO_REV;
-
-    osBrowser += getBrowser(window.navigator.userAgent);
-    osBrowser += getOs(window.navigator.userAgent);
-
-    return [greeting, revisionMsg, osBrowser];
-}
-
 function needRevision(revDate, actualDate) {
     
 }
@@ -152,4 +129,25 @@ function monthStringToNumber(month) {
         monthNumber = 0;
     }
     return [monthNumber, maxdays];
+}
+
+function showVehicleRevisionStatus(queryString) {
+    //Recibe ?mat=queryString&rev=queryString
+    var vars = getVars(queryString, "mat", "rev"),
+        numberplate = vars[0],
+        lastrevdate = vars[1],
+        today = new Date(),
+        greeting = checkGreeting(actualHour),
+        osBrowser,
+
+
+//Esto como if
+    revisionMsg = !validatePlate(numberplate) ? ERR_MAT :
+                  !checkDate(lastrevdate) ? ERR_DATE_MAT :
+                  needRevision(lastrevdate, today) ? revisionCompany() : NO_REV;
+
+    osBrowser += getBrowser(window.navigator.userAgent);
+    osBrowser += getOs(window.navigator.userAgent);createExpression(xpathText, namespaceURLMapper)
+
+    return [greeting, revisionMsg, osBrowser];
 }
