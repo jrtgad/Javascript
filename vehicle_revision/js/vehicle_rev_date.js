@@ -4,20 +4,62 @@ function showVehicleRevisionStatus(queryString) {
         numberplate = vars[0],
         lastrevdate = vars[1],
         today       = new Date(),
-        Actualday   = today.getUTCDate(),
-        Actualmonth = today.getUTCMonth() + 1,
-        Actualyear  = today.getUTCFullYear(),
-        greeting,
+        actualDay   = today.getUTCDate(),
+        actualMonth = today.getUTCMonth() + 1,
+        actualYear  = today.getUTCFullYear(),
+        actualHour  = today.getHours(),
+        greeting    = checkGreeting(actualHour),
         revisionMsg,
         osBrowser;
 
     !validatePlate(numberplate) ? revisionMsg = ERR_MAT :
     !checkDate(lastrevdate)     ? revisionMsg = ERR_DATE_MAT :
-    checkDate(lastrevdate)      ? revisionMsg = revision();
+                                  revisionMsg = revision();
+
+    osBrowser += getBrowser(window.navigator.userAgent);
+    osBrowser += getOs(window.navigator.userAgent);
 
     return [greeting, revisionMsg, osBrowser];
 }
 
+function getBrowser(info) {
+    var browser;
+
+    if (info.indexOf("OPR") !== -1) {
+        browser = "Opera, ";
+    } else if (info.indexOf("Firefox") !== -1) {
+        browser = "Firefox, ";
+    } else if (info.indexOf("Chromium") !== -1) {
+        browser = "Chromium, ";
+    } else if (info.indexOf("Edge") !== -1) {
+        browser = "Microsoft Edge, ";
+    }
+
+    return browser;
+}
+
+function getOs(info) {
+    var os;
+
+    if (info.indexOf("Linux") !== -1) {
+        os = "Linux, ";
+    } else if (info.indexOf("Microsoft") !== -1) {
+        os = "Microsoft, ";
+    } else if (info.indexOf("Mac") !== -1) {
+        os = "IOS, ";
+    } else if (info.indexOf("Android") !== -1) {
+        os = "Android, ";
+    }
+
+    return os;
+}
+
+function checkGreeting(hour) {
+    var msg = hour < 13 ? "Buenos días"   : 
+              hour < 18 ? "Buenas tardes" : "Buenas noches";
+
+    return msg;
+}
 
 function revision() {
     var num = Math.floor(Math.random() * 4),
@@ -32,7 +74,7 @@ function validatePlate(mat) {
     return template.test(mat);
 }
 
-function get(queryString) {
+function getVars(queryString) {
   var value1 = queryString.subString(queryString.indexOf("mat=") + 4,
                                     queryString.indexOf("&")),
 
@@ -46,11 +88,11 @@ function checkDate(date) {
     var day = date[0] + date[1],
         month = monthStringToNumber(date[2] + date[3] + date[4]),
         year = date[5] + date[6] + date[7] + date[8],
-        msg;
+        valid;
 
-    !month[0] ? msg = false : day > month[1] ? msg = false : msg = true;
+    !month[0] ? valid = false : day > month[1] ? valid = false : valid = true;
 
-    return msg;
+    return valid;
 }
 
 function monthStringToNumber(month) {
