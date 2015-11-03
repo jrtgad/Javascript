@@ -77,7 +77,6 @@ function checkDate(date) {
         validDay = (day <= 31 || day > 0),
         validMonth = (MONTHS.indexOf(month.toLowerCase())) % 3,
         validYear = year > 0,
-        differenceOfDays = 0;
 
         /*.getTime() Recoge los ms de una fecha*/
 
@@ -87,4 +86,3 @@ function checkDate(date) {
 
     return differenceOfDays;
 }
-
