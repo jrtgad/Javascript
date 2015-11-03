@@ -1,8 +1,8 @@
-/*function needRevision(revDate, actualDate) {
+function needRevision(revDate, actualDate) {
     var revMsg;
-
+    
     return revMsg;
-}*/
+}
 
 function getBrowser(info) {
     var browser;
@@ -10,11 +10,13 @@ function getBrowser(info) {
     if (info.indexOf("OPR") !== -1) {
         browser = "Opera";
     } else if (info.indexOf("Firefox") !== -1) {
-        browser = "Firefox";
+        browser = "Mozilla Firefox";
     } else if (info.indexOf("Chromium") !== -1) {
         browser = "Chromium";
     } else if (info.indexOf("Edge") !== -1) {
         browser = "Microsoft Edge";
+    } else if (info.indexOf("Chrome") !== -1) {
+        browser = "Google Chrome";
     }
 
     return browser;
@@ -25,8 +27,8 @@ function getOs(info) {
 
     if (info.indexOf("Linux") !== -1) {
         os = "Linux";
-    } else if (info.indexOf("Microsoft") !== -1) {
-        os = "Microsoft";
+    } else if (info.indexOf("Windows") !== -1) {
+        os = "Windows";
     } else if (info.indexOf("Mac") !== -1) {
         os = "IOS";
     } else if (info.indexOf("Android") !== -1) {
@@ -61,10 +63,10 @@ function validatePlate(mat) {
 }
 
 function getVars(queryString, var1, var2) {
-    var value1 = queryString.subString(queryString.indexOf(var1) + 4,
+    var value1 = queryString.subString(queryString.indexOf(var1) + var1.length + 1,
                                     queryString.indexOf("&")), /* || queryString.length*/
 
-        value2 = queryString.subString(queryString.indexOf(var2) + 4,
+        value2 = queryString.subString(queryString.indexOf(var2) + var2.length + 1,
                                     queryString.length);       /* || queryString.indexOf("&")*/
 
     return [value1.trim(), value2.trim()];
@@ -83,6 +85,4 @@ function checkDate(date) {
     /*if (validDay && validMonth && validYear) {
 
     }*/
-
-    return differenceOfDays;
 }
