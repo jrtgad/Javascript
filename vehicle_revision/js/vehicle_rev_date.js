@@ -14,10 +14,10 @@ function showVehicleRevisionStatus (string) {
         year = today.getUTCFullYear(),
         output;
 
-    if(!template.test(mat)) {
+    if(!checkDates()) {
+        output = ERR_DATE_MAT;
+    } else if(!template.test(mat)) {
         output = ERR_MAT;
-    } else if(!checkDates()) {
-
     }
 
 
