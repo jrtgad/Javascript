@@ -1,9 +1,9 @@
 function calculateDaysSinceEpoch(date) {
     var countDays = 0,
-        day = (date[0] + date[1]) * 1,
+        day = +(date[0] + date[1]),
         validDay =  (!(day < 1 || day > 31) && !(date[0] === " " || date[1] === " ")),
         monthLetters = date[2] + date[3] + date[4],
-        year = 1 * (date[5] + date[6] + date[7] + date[8]),
+        year = +(date[5] + date[6] + date[7] + date[8]),
         validYear = (!(year <= 0 || year > 9999) && !(date[9] + 1) && !isNaN(year)),
         monthNumber,
         maxdays,

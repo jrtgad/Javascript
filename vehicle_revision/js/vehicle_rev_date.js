@@ -1,14 +1,10 @@
-function showVehicleRevisionStatus (string) {
-    var template = new RegExp("^[0-9]{4}[- ]?[A-Z]{3}$|
-                               ^[A-Z]{1,2}-?[0-9]{4}-?[A-Z]{1,2}$",
-                               "i"),
-
-                    /*/^[0-9]{4}-?[A-Z]{3}$/  También vale*/
-
-    //Recibe ?user=string&mat=string&rev=string
-        numberplate = ,
-        lastrevdate = ,
+function showVehicleRevisionStatus(queryString) {
+    //Recibe ?mat=queryString&rev=queryString
+    var vars = getVars(queryString, "mat", "rev"),
+        numberplate = vars[0].trim(),
+        lastrevdate = vars[1].trim(),
         today = new Date(),
+<<<<<<< HEAD
         day = today.getUTCDate(),
         month = today.getUTCMonth() + 1,
         year = today.getUTCFullYear(),
@@ -18,12 +14,26 @@ function showVehicleRevisionStatus (string) {
         output = ERR_DATE_MAT;
     } else if(!template.test(mat)) {
         output = ERR_MAT;
+=======
+        greeting = getGreeting(today),
+        osBrowser = getBrowser(INFO_SYSTEM) + ", " + getOs(INFO_SYSTEM),
+        revisionMsg;
+
+
+    if (!validatePlate(numberplate)) {
+        revisionMsg = ERR_MAT;
+    } else if (!checkDate(lastrevdate)) {
+        revisionMsg = ERR_DATE_MAT;
+    } else if (needRevision(lastrevdate, today)) {
+        revisionCompany(COMPANIES);
+    } else {
+        revisionMsg = NO_REV;
+>>>>>>> 6cb3bdf50e6af7aeb22bb3b3b27b8dff9f2ac30d
     }
 
+    /*revisionMsg = !validatePlate(numberplate) ? ERR_MAT :
+                  !checkDate(lastrevdate) ? ERR_DATE_MAT :
+                  needRevision(lastrevdate, today) ? revisionCompany() : NO_REV;*/
 
-    return output;
+return [greeting, revisionMsg, osBrowser];
 }
-
-/*function checkDate(date) {
-
-}*/
