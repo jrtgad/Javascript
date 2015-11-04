@@ -1,4 +1,4 @@
-function needRevision(revDate, actualDate) {
+function notNeedRevision(revDate, actualDate) {
     var revMsg;
     
     return revMsg;
@@ -62,14 +62,11 @@ function validatePlate(mat) {
     return template.test(mat);
 }
 
-function getVars(queryString, var1, var2) {
-    var value1 = queryString.subString(queryString.indexOf(var1) + var1.length + 1,
-                                    queryString.indexOf("&")), /* || queryString.length*/
+function getVars(queryString, varString) {
+    var varString = queryString.subString(queryString.indexOf(varString) + varString.length + 1,
+                                    queryString.indexOf("&")), 
 
-        value2 = queryString.subString(queryString.indexOf(var2) + var2.length + 1,
-                                    queryString.length);       /* || queryString.indexOf("&")*/
-
-    return [value1.trim(), value2.trim()];
+    return varString.trim();
 }
 
 function checkDate(date) {
