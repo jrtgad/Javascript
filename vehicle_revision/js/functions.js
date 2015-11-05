@@ -79,7 +79,7 @@ function checkDate(date) {
 
         /*.getTime() Recoge los ms de una fecha*/
 
-    /*if (validDay && validMonth && validYear) {
+    if (validDay && validMonth && validYear) {
 
-    }*/
+    }
 }
