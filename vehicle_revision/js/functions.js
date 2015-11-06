@@ -1,9 +1,3 @@
-function notNeedRevision(revDate, actualDate) {
-    var revMsg;
-    
-    return revMsg;
-}
-
 function getBrowser(info) {
     var browser;
 
@@ -38,19 +32,19 @@ function getOs(info) {
     return os;
 }
 
-function getGreeting(hour) {
-    var msg = hour < 13 ? "Buenos días"   :
-                hour < 18 ? "Buenas tardes" : "Buenas noches";
-/*                  ^COMO IF??????^                 */
+function getHourOfDay(date) {
+    var hour = date.getHours(),
+        msg = hour < 13 ? "Buenos días" :
+              hour < 18 ? "Buenas tardes" : "Buenas noches";
 
     return msg;
 }
 
 function revisionCompany(COMPANIES) {
-    var companies = COMPANIES.split("|"),
+    var companies = COMPANIES.split("|").trim(),
         num = Math.floor(Math.random() * companies.length);
 
-    return companies[num].trim();
+    return companies[num];
 }
 
 function validatePlate(mat) {
@@ -62,24 +56,58 @@ function validatePlate(mat) {
     return template.test(mat);
 }
 
-function getVars(queryString, varString) {
-    var varString = queryString.subString(queryString.indexOf(varString) + varString.length + 1,
-                                    queryString.indexOf("&")), 
+function getVars(queryString, varName) {
+    var varString,
+        afterVar = queryString.indexOf(varName) + varName.length + 1,
+        anyAmpersand = 0;
+
+    for (var i = afterVar; i < queryString.length; i++) {
+        if (queryString[i] === "&") {
+            anyAmpersand++;
+            i = queryString.length + 1;
+        }
+    }
+
+    if (anyAmpersand) {
+        varString = queryString.subString(afterVar, queryString.indexOf("&"));
+    } else {
+        varString = queryString.subString(afterVar, queryString.length());
+    }
 
     return varString.trim();
 }
 
-function checkDate(date) {
-    var day = date[0] + date[1],
+function daysSinceRevision(diffInMS) {
+    return diffInMS / MSECTODAYS;
+}
+
+function checkDate(date, today) {
+    var validDate,
+        day = date[0] + date[1],
         month = date[2] + date[3] + date[4],
+        monthNumber = (MONTH_STRING.indexOf(month.toLowerCase()) / 3 + 1).toString(),
         year = date[5] + date[6] + date[7] + date[8],
-        validDay = (day <= 31 || day > 0),
-        validMonth = (MONTHS.indexOf(month.toLowerCase())) % 3,
-        validYear = year > 0,
+        validDay = (day <= 31 || day > 0) && !isNaN(date[1]),
+        validMonth = (MONTH_STRING.indexOf(month.toLowerCase())) % 3,
+        validYear = year > 0;
+        while(monthNumber.length === 1) {
+            monthNumber = "0" + monthNumber;
+        }
 
         /*.getTime() Recoge los ms de una fecha*/
 
-    if (validDay && validMonth && validYear) {
-
+    if (validDay && !validMonth && validYear) {
+        var lastrevdate = new Date(year + "-" + monthNumber + "-" + day),
+            actualDate = new Date(today);
+                           
+            if (lastrevdate > actualDate) {
+                validDate = 0;
+            } else if (daysSinceRevision(actualDate - lastrevdate) > 365) {
+                    validDate = 1;
+                    } else{
+                        validDate = 2;
+                    }
+        }
     }
+    return validDate;
 }

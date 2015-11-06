@@ -1,20 +1,27 @@
 function showVehicleRevisionStatus(queryString) {
     //Recibe ?mat=queryString&rev=queryString
-    var vars = 
-        numberplate = getVars(queryString, "numberplate"),
+    var numberplate = getVars(queryString, "numberplate"),
         lastrevdate = getVars(queryString, "lastrevdate"),
         today = new Date(),
-        output;
+        greetings,
+        revisionMsg,
+        osBrowser;
 
     if (!validatePlate(numberplate)) {
-        greeting = ERR_MAT;        
-    } else if (!checkDate(lastrevdate)) {
-        greeting = ERR_DATE_MAT;
-    } else if (notNeedRevision(lastrevdate, today)) {
+        greetings = ERR_MAT;
+        revisionMsg = "";
+        osBrowser = "";
+    } else if (!checkDate(lastrevdate, today)) {
+        greetings = ERR_DATE_MAT;
+        revisionMsg = "";
+        osBrowser = "";
+    } else if (checkDate(lastrevdate, today) === 1) {
+        greetings = getHourOfDay(today);
         revisionMsg = NO_REV;
+        osBrowser = getOs(INFO_SYSTEM) + ", " + getBrowser(INFO_SYSTEM);
     } else {
         revisionCompany(COMPANIES);
     }
 
-return [greeting, revisionMsg, osBrowser];
+    return [greetings, revisionMsg, osBrowser];
 }
