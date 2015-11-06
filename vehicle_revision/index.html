@@ -1,25 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Fecha de revisión de un vehículo</title>
-    <link rel="stylesheet" href="css/estilo.css">
-</head>
-<body>
-    <form action="getform.html" method="GET">
-        <label for="mat">Introduzca la matrícula de su vehículo</label>
-        <br>
-        <input type="text" name="numberplate">
-        <br><br>
-
-        <label for="lastrevdate">Introduzca la fecha de la última revisión de su vehículo
-            <br>
-            (formato DDMMMYYYY, MMM en letra)
-        </label>
-        <br>
-        <input type="text" name="rev">
-            <br>
-        <input type="submit" value="Enviar">
-    </form>
-</body>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Fecha de revisión de un vehículo</title>
+        <script src="js/globals.js"></script>
+        <script src="js/functions.js"></script>
+        <script src="js/vehicle_rev_date.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body>
+        <section id="greetings"></section>
+        <section id="revMsg"></section>
+        <section id="osBrowser"></section>
+    </body>
 </html>

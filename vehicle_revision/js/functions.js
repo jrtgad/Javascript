@@ -16,6 +16,10 @@ function getBrowser(info) {
     return browser;
 }
 
+function getSystemInfo() {
+    return window.navigator.userAgent;
+}
+
 function getOs(info) {
     var os;
 
@@ -51,7 +55,6 @@ function validatePlate(mat) {
     var template =
         new RegExp("^[0-9]{4}[- ]?[A-Z]{3}$|^[A-Z]{1,2}-?[0-9]{4}-?[A-Z]{1,2}$",
                                  "i");
-                                    /*/^[0-9]{4}-?[A-Z]{3}$/  También vale*/
 
     return template.test(mat);
 }
@@ -69,12 +72,12 @@ function getVars(queryString, varName) {
     }
 
     if (anyAmpersand) {
-        varString = queryString.subString(afterVar, queryString.indexOf("&"));
+        varString = queryString.substr(afterVar, queryString.indexOf("&"));
     } else {
-        varString = queryString.subString(afterVar, queryString.length());
+        varString = queryString.substr(afterVar, queryString.length);
     }
 
-    return varString.trim();
+    return varString;
 }
 
 function daysSinceRevision(diffInMS) {
@@ -85,7 +88,8 @@ function checkDate(date, today) {
     var validDate,
         day = date[0] + date[1],
         month = date[2] + date[3] + date[4],
-        monthNumber = (MONTH_STRING.indexOf(month.toLowerCase()) / 3 + 1).toString(),
+        monthNumber = (MONTH_STRING.indexOf(month.toLowerCase()) / 3 +
+                        1).toString(),
         year = date[5] + date[6] + date[7] + date[8],
         validDay = (day <= 31 || day > 0) && !isNaN(date[1]),
         validMonth = (MONTH_STRING.indexOf(month.toLowerCase())) % 3,
@@ -94,20 +98,18 @@ function checkDate(date, today) {
             monthNumber = "0" + monthNumber;
         }
 
-        /*.getTime() Recoge los ms de una fecha*/
 
     if (validDay && !validMonth && validYear) {
         var lastrevdate = new Date(year + "-" + monthNumber + "-" + day),
             actualDate = new Date(today);
-                           
+
             if (lastrevdate > actualDate) {
-                validDate = 0;
+                validDate = -1;
             } else if (daysSinceRevision(actualDate - lastrevdate) > 365) {
-                    validDate = 1;
-                    } else{
-                        validDate = 2;
-                    }
-        }
+                validDate = 1;
+                } else {
+                    validDate = 2;
+                }
+        return validDate;
     }
-    return validDate;
 }
