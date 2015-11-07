@@ -39,13 +39,13 @@ function getOs(info) {
 function getHourOfDay(date) {
     var hour = date.getHours(),
         msg = hour < 13 ? "Buenos días" :
-              hour < 18 ? "Buenas tardes" : "Buenas noches";
+                hour < 18 ? "Buenas tardes" : "Buenas noches";
 
     return msg;
 }
 
 function revisionCompany(COMPANIES) {
-    var companies = COMPANIES.split("|").trim(),
+    var companies = COMPANIES.split("|"),
         num = Math.floor(Math.random() * companies.length);
 
     return companies[num];
@@ -53,7 +53,7 @@ function revisionCompany(COMPANIES) {
 
 function validatePlate(mat) {
     var template =
-        new RegExp("^[0-9]{4}[- ]?[A-Z]{3}$|^[A-Z]{1,2}-?[0-9]{4}-?[A-Z]{1,2}$",
+        new RegExp("^[0-9]{4}-?[A-Z]{3}$|^[A-Z]{1,2}-?[0-9]{4}-?[A-Z]{1,2}$",
                                  "i");
 
     return template.test(mat);
@@ -61,22 +61,25 @@ function validatePlate(mat) {
 
 function getVars(queryString, varName) {
     var varString,
+        i,
         afterVar = queryString.indexOf(varName) + varName.length + 1,
         anyAmpersand = 0;
-
-    for (var i = afterVar; i < queryString.length; i++) {
-        if (queryString[i] === "&") {
-            anyAmpersand++;
-            i = queryString.length + 1;
+    if (queryString.indexOf(varName) !== -1) {
+        for (i = afterVar; i < queryString.length; i += 1) {
+            if (queryString[i] === "&") {
+                anyAmpersand += 1;
+                i = queryString.length + 1;
+            }
         }
-    }
 
-    if (anyAmpersand) {
-        varString = queryString.substr(afterVar, queryString.indexOf("&"));
+        if (anyAmpersand) {
+            varString = queryString.substring(afterVar, queryString.indexOf("&"));
+        } else {
+            varString = queryString.substring(afterVar, queryString.length);
+        }
     } else {
-        varString = queryString.substr(afterVar, queryString.length);
+        varString = "";
     }
-
     return varString;
 }
 
@@ -86,30 +89,47 @@ function daysSinceRevision(diffInMS) {
 
 function checkDate(date, today) {
     var validDate,
-        day = date[0] + date[1],
+        lastrevdate,
+        actualDate,
+        day;
+        //Adds a 0 (zero) if the day is 1 character long
+    if (isNaN(date[1])) {
+        day = "0" + date[0];
+    } else {
+        day = date[0] + date[1];
+    }  
+
         month = date[2] + date[3] + date[4],
-        monthNumber = (MONTH_STRING.indexOf(month.toLowerCase()) / 3 +
-                        1).toString(),
+        monthNumber = ((MONTH_STRING.indexOf(month) / 3) +
+                        1),
         year = date[5] + date[6] + date[7] + date[8],
-        validDay = (day <= 31 || day > 0) && !isNaN(date[1]),
-        validMonth = (MONTH_STRING.indexOf(month.toLowerCase())) % 3,
-        validYear = year > 0;
-        while(monthNumber.length === 1) {
-            monthNumber = "0" + monthNumber;
-        }
+        validDay = (day <= 31 || day > 0),
+
+        //if validMonth is equal to 0, the the month exists
+        validMonth = (MONTH_STRING.indexOf(month) % 3),
+        validYear = (year > 0);
+
+    
+
+    //Adds a 0 (zero) if the month is 1 character long
+    while (monthNumber.toString().length === 1) {
+        monthNumber = "0" + monthNumber;
+    }
 
 
     if (validDay && !validMonth && validYear) {
-        var lastrevdate = new Date(year + "-" + monthNumber + "-" + day),
-            actualDate = new Date(today);
+        lastrevdate = new Date(year + "-" + monthNumber + "-" + day);
+        actualDate = new Date(today);
 
-            if (lastrevdate > actualDate) {
-                validDate = -1;
-            } else if (daysSinceRevision(actualDate - lastrevdate) > 365) {
-                validDate = 1;
-                } else {
-                    validDate = 2;
-                }
-        return validDate;
+        if (lastrevdate > actualDate) {
+            validDate = -1;
+        } else if (daysSinceRevision(actualDate - lastrevdate) > 365) {
+            validDate = 1;
+        } else {
+            validDate = 2;
+        }
+    } else {
+        validDate = -1;
     }
+    return validDate;
 }

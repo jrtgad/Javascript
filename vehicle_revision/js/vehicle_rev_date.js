@@ -3,20 +3,16 @@ function showVehicleRevisionStatus(queryString) {
         lastrevdate = getVars(queryString, "lastrevdate"),
         today = new Date(),
         greetings,
-        revisionMsg,
-        osBrowser;
+        revisionMsg = "",
+        osBrowser = "";
 
     if (!validatePlate(numberplate)) {
         greetings = ERR_MAT;
-        revisionMsg = "";
-        osBrowser = "";
-    } else if (checkDate(lastrevdate, today) === -1) {
+    } else if (checkDate(lastrevdate, today) === -1 || lastrevdate === "") {
         greetings = ERR_DATE_MAT;
-        revisionMsg = "";
-        osBrowser = "";
     } else if (checkDate(lastrevdate, today) === 1) {
         greetings = getHourOfDay(today);
-        revisionMsg = revisionCompany(COMPANIES);
+        revisionMsg = REVISION.replace("EEEE", revisionCompany(STRING_COMPANIES));
         osBrowser = getOs(getSystemInfo()) + ", " +
                         getBrowser(getSystemInfo());
     } else {
