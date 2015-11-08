@@ -91,27 +91,50 @@ function checkDate(date, today) {
     var validDate,
         lastrevdate,
         actualDate,
-        day = +(date[0] + date[1]),
-        month = date[2] + date[3] + date[4],
-        monthNumber = (MONTH_STRING.indexOf(month) / 3),
-        year = +(date[5] + date[6] + date[7] + date[8]),
-        validDay = (day <= 31 && day > 0),
+        day,
+        month,
+        year,
+        monthNumber;
+    //Adds a 0 (zero) if the day is 1 character long
+    if (!isNaN(date[0]) && !isNaN(date[1])) {
+        day = +(date[0] + date[1]);
+        while (day.toString().length === 1) {
+            day = "0" + day;
+        }
+        month = date[2] + date[3] + date[4];
+        monthNumber = (MONTH_STRING.indexOf(month) / 3) + 1;
+        year = +(date[5] + date[6] + date[7] + date[8]);
+        validDay = (day <= 31 || day > 0),
+
+        //if validMonth is equal to 0, the the month exists
         validMonth = (MONTH_STRING.indexOf(month) % 3),
         validYear = (year > 0);
 
-    if (validDay && !validMonth && validYear) {
-        lastrevdate = new Date(year, monthNumber, day);
-        actualDate = new Date(today);
+        //Adds a 0 (zero) if the month is 1 character long
+        while (monthNumber.toString().length === 1) {
+            monthNumber = "0" + monthNumber;
+        }
 
-        if (lastrevdate > actualDate) {
-            validDate = -1;
-        } else if (daysSinceRevision(actualDate - lastrevdate) > 365) {
-            validDate = 1;
+
+        if (validDay && !validMonth && validYear) {
+            lastrevdate = new Date(year + "-" + monthNumber + "-" + day);
+            actualDate = new Date(today);
+
+            if (lastrevdate > actualDate) {
+                validDate = -1;
+            } else if (daysSinceRevision(actualDate - lastrevdate) > 365) {
+                validDate = 1;
+            } else {
+                validDate = 2;
+            }
         } else {
-            validDate = 2;
+            validDate = -1;
         }
     } else {
-        validDate = -1;
+        validDate = -1
     }
+        
+
+        
     return validDate;
 }
