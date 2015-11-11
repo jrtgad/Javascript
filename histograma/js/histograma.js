@@ -1,18 +1,16 @@
 function cuentaCaracteres(queryString) {
-	var i,
-		resultado,
-		caracteresArray = [],
-		queryString = queryString.toUpperCase().replace(" ", "_");
+    var i,
+        resultado,
+        caracteresArray = [],
+        queryString = queryString.toUpperCase();
 
-	for (i = 0; i < queryString.length; i += 1) {
-		if (caracteresArray.indexOf(queryString[i]) !== -1) {
-			caracteresArray[caracteresArray.indexOf(queryString[i]) + 1] += 1;
-		} else {
-			caracteresArray.push(queryString[i], 0);
-		}
-		
-	}
-	resultado = creaHistograma(caracteresArray);
-
-	return resultado;
+    for (i = 0; i < queryString.length; i += 1) {
+        if (caracteresArray.indexOf(queryString[i]) !== -1) {
+            caracteresArray[caracteresArray.indexOf(queryString[i]) + 1] += "*";
+        } else {
+            caracteresArray.push(queryString[i], "*");
+        }
+        
+    }
+    return caracteresArray;
 }
