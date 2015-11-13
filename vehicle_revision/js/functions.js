@@ -84,7 +84,7 @@ function getVars(queryString, varName) {
 }
 
 function daysSinceRevision(diffInMS) {
-    return diffInMS / MSECTODAYS;
+    return Math.floor(diffInMS / MSECTODAYS);
 }
 
 function checkDate(date, today) {
