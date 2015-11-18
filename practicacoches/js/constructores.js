@@ -1,7 +1,3 @@
-
-
-
-
 function Concesionario(nombre, direccion, stock) {
 	this.nombre = nombre;
 	this.direccion = direccion;

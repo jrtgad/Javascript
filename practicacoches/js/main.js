@@ -8,10 +8,13 @@ function getData() {
 		coches = [coche1, coche2, coche3, coche4, coche5],
 
 		concesionario1 = new Concesionario("Pepe", "Falsa"),
-		concesionario1.addStock(coches),
+		concesionario1.prototype.addStock(coches),
 
-		html = "<tabla>";
-	html += "<tr><td>";
-	
+		html = tabla(concesionario1);
+		$(salida).innerHTML = html;
 }
 window.onload = getData();
+
+function $(selector) {
+	return Document.getElementById(selector);
+}
