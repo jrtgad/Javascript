@@ -1,0 +1,46 @@
+@bg-color: aquamarine;
+@result-bg-color: gold;
+@btn-desp: 3px;
+@btn-padding: 0.5em;
+@font-size: 2em;
+@result-font-size: 4em;
+
+div {
+    position: absolute;
+    top: 2em;
+}
+
+.btn {
+    font-family: sans-serif;
+    font-size: @font-size;
+    padding: @btn-padding;
+    border-radius: @btn-padding;
+    border-style: solid;
+    cursor: default;
+    
+    &:hover {
+        background-color: @bg-color;
+    }
+
+    &:active {
+        position: relative;
+        top: @btn-desp;
+        left: @btn-desp;
+    } 
+}
+
+.btnlink {
+    .btn;
+    text-decoration: none;
+    color: inherit;
+}
+
+.btnpara {
+    .btn;
+    display: inline-block;    
+}
+
+div#result {
+    font-size: @result-font-size;
+    background-color: @result-bg-color;
+}

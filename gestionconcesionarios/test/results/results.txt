@@ -1,0 +1,9 @@
+
+[0m[0m
+[0m  Test taxes module[0m
+[0m    Calculate Tax[0m
+[2K[0G    [32m  ✓[0m[90m should evaluate to 10 when tax is 10% and price is 100[0m
+
+
+[92m [0m[32m 1 passing[0m[90m (2ms)[0m
+
