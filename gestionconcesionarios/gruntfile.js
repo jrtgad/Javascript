@@ -56,7 +56,11 @@ module.exports = function (grunt) {
             my_target: {
                 files: {
                     'lib/back-end.min.js': ['js/back-end.js'],
+<<<<<<< HEAD
 		    'lib/front-end.min.js': ['js/front-end.js]
+=======
+		          'lib/front-end.min.js': ['js/back-end.js']
+>>>>>>> 4b75b97b10bb85b2d01dc7b2768eb688672d2cc2
                 }
             }
         },
