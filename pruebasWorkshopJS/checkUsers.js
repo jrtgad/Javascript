@@ -1,13 +1,11 @@
 function checkUsersValid(goodUsers) {
-    return function allUsersValid(submittedUsers) {
-        submittedUsers.map(function (x) {
-            return x.id;
-        }).every(function (y) {
-            return y === goodUsers.some(function (z) {
-                return z.id;
-            });
-        });
-    };
+  return function(submittedUsers) {
+    return submittedUsers.every(function(enviados) {
+    	return goodUsers.some(function(buenos) {
+    		return buenos.id === enviados.id;
+    	})
+    })
+  };
 }
 
 module.exports = checkUsersValid;

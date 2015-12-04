@@ -2,8 +2,8 @@
 
 //ESPACIO DE NOMBRES
 var globals = function (ns) {
-    ns.ZONE = "Norte|Sur|Este|Oeste";
-    ns.MODELS = "Basic|Homing|Transper|BerlinX|MaximV8";
+    ns.ZONE = ["Norte", "Sur", "Este", "Oeste"];
+    ns.MODELS = ["Basic", "Homing", "Transper", "BerlinX", "MaximV8"];
     return ns;
 }({});
 //({}) es un objeto vacío para no perder las variables(clausura)
@@ -31,7 +31,7 @@ Dealership.prototype.findNumberPlate = function (plate) {
     })
 };
 
-DealerShip.prototype.sellProfits = function (cars) {
+Dealership.prototype.sellProfits = function (cars) {
     return cars.map(function (x) {
         //Calcula, por separado, el beneficio que da cada coche
         return x.sellPrice - x.buyPrice;
@@ -44,8 +44,10 @@ DealerShip.prototype.sellProfits = function (cars) {
     });
 };
 
+var net = new DealersNet();
+
 function DealersNet() {
-    this.Dealers = globals.ZONE.split("|").map(function (x) {
+    this.Dealers = globals.ZONE.map(function (x) {
         return new Dealership(x);
     });
 }

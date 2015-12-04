@@ -1,27 +1,31 @@
 "use strict";
 
-function $(selector) {
-	return Document.getElementById(selector);
+function $(id) {
+    return document.getElementById(id);
 }
-
-"use strict";
-function writeData() {
-	
-}
-
 
 function getData() {
+    /*var select = document.addChild($("page"),
+        DealersNet().map(function (x) {
+            return x.Dealer;
+        }));*/
+    var element = document.createElement("select");
+    element.id = "selectDealer";
 
-	//modelo, matrícula, fecha de última revisión, precio de compra y precio estimado de venta
-	var selectDealer = $(dealer_select);
-		selectDealer.addEventListener("change", writeData, false);
+    globals.ZONE.forEach(function (x) {
+        var option = document.createElement("option");
+        option.value = x;
+        option.innerHTML = x;
+        element.appendChild(option);
+    });
 
-		buyForm = $(buy_form);
-		buyForm.addEventListener("click", addCar(){
-			new Coche($(nombre.value))
-		});
+    $("page").appendChild(element);
 
-		//html = tabla(concesionario1);
-		$(salida).innerHTML = html;
+    $("selectDealer").addEventListener("change", createTable);
 }
-window.onload = getData();
+
+function createTable() {
+
+}
+
+window.onload = getData;
