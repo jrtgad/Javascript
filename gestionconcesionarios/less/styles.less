@@ -2,6 +2,11 @@ body {
     max-width: 960px;
     margin: 0 auto;
     background-color: #cacaca;
+    .redBackground {
+        background-color: red;
+        color: white;
+        width: 300px;
+    }
     #page {
         margin: 0 auto;
         text-align: center;
@@ -12,29 +17,36 @@ body {
             display: block;
             text-align: center;
             margin: 0 auto;
+            margin-bottom: 0.5em;
         }
         button {
         background-color: darkgreen;
         color: yellow;
+        margin-bottom: 0.5em;
         }
         table {
-            width: 80%;
+            width: 95%;
             text-align: center;
             margin: 0 auto;
             padding-top: 1em;
-            :first-child {
-                text-transform: lowercase;
-            }
-            :first-letter {
-                text-transform: capitalize;
-            }
+            margin-bottom: 0.5em;
             tr {
                 margin: 0 auto;
                 text-align: center;
-                font-size: 1.5em;
                 td {
                     text-align: center;
                     height: 1em;
+                    font-size: 0.8em;
+                    padding: 10px;
+                }
+                th {
+                    background-color: lightgreen;
+                    text-align: center;
+                    font-size: 1.2em;
+                    text-transform: lowercase;
+                    &:first-letter {
+                        text-transform: capitalize;
+                    }
                 }
             }
         }

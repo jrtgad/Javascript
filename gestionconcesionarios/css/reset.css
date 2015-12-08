@@ -20,6 +20,12 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 :focus {
 	outline: 0;
 }
+button {
+	cursor:pointer;
+}
+select {
+	cursor:pointer;
+}
 body {
 	line-height: 1;
 	color: black;

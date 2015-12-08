@@ -1,8 +1,11 @@
 "use strict";
+
 //ESPACIO DE NOMBRES
 var globals = function (ns) {
     ns.ZONE = ["North", "South", "East", "West"];
     ns.MODELS = ["Basic", "Homing", "Transper", "BerlinX", "MaximV8"];
+    ns.PROPERTIES = ["model", "numberPlate", "lastRevDate", "buyPrice", "sellPrice"];
+    ns.MONTHS = "janfebmaraprmayjunjulaugsepoctnovdec";
     return ns;
 }({});
 //({}) es un objeto vacío para no perder las variables(clausura)
@@ -15,7 +18,7 @@ function validatePlate(mat) {
     return template.test(mat);
 }
 
-function Car(model = null, numberPlate = null, lastRevDate = null, buyPrice = null, sellPrice = null) {
+function Car(model, numberPlate, lastRevDate, buyPrice, sellPrice) {
     this.model = model;
     this.numberPlate = numberPlate;
     this.lastRevDate = lastRevDate;
@@ -28,19 +31,72 @@ function Dealership(zone) {
     this.stock = [];
 }
 
+Dealership.prototype.validateData = function (dataInput) {
+
+    /** HACER METODO DE LA RED??? */
+    /** validNumberPlate*/
+
+    var methods = [validateModel, validatePlate, validateDate, validatePrice, validatePrice];
+
+    return dataInput.every(function (x, y) {
+        return this[y](x);
+    }, methods);
+}
+
+function validateModel(model) {
+    return globals.MODELS.some(function (x) {
+        return model === x;
+    });
+}
+
+function validatePrice(price) {
+    return price > 0;
+}
+
+function validateDate(date) {
+    var valid,
+        day = +(date[0] + date[1]),
+        month = date[2] + date[3] + date[4],
+        year = +(date[5] + date[6] + date[7] + date[8]),
+        monthNumber = (globals.MONTHS.indexOf(month) / 3),
+        today = new Date(),
+        lastrev = new Date(year, monthNumber, day),
+        dateTemplate = new RegExp("^[0-9]{2}[A-Z]{3}[0-9]{4}$", "i"),
+        validDay = (day <= 31 && day > 0),
+        validMonth = (globals.MONTHS.indexOf(month) % 3),
+        validYear = (year > 0);
+
+    if (dateTemplate.test(date) && validDay && !validMonth && validYear && (today > lastrev)) {
+        valid = true;
+    } else {
+        valid = false;
+    }
+    return valid;
+}
+
+/** m8888j */
+
 /** Compra el coche si los datos son correctos */
 Dealership.prototype.buyCar = function (model, numberPlate, lastRevDate, buyPrice, sellPrice) {
-    if (validatePlate(numberPlate)) {
-        if (Dealers.validNumberPlate(numberPlate)) {
-            this.cars.push(new Car(model, numberPlate, lastRevDate, buyPrice, sellPrice));
-        }
-    }
+    //AQUI SOLO LLEGAN DATOS CORRECTOS, ESTA SOLO AÑADE
+    this.stock.push(new Car(model, numberPlate, lastRevDate, buyPrice, sellPrice));
 };
+
+/** MIRAR LA FUNCION DE VENTA */
+Dealership.prototype.sellCar = function (numberPlate) {
+    this.stock = this.stock.filter(function (x) {
+        if (x.numberPlate !== numberPlate) {
+            return x;
+        }
+    });
+};
+
 Dealership.prototype.findNumberPlate = function (plate) {
-    return this.cars.some(function (eachCar) {
+    return this.stock.some(function (eachCar) {
         return eachCar.numberPlate === plate;
     })
 };
+
 Dealership.prototype.sellProfits = function (cars) {
     return cars.map(function (x) {
         //Calcula, por separado, el beneficio que da cada coche
@@ -53,7 +109,6 @@ Dealership.prototype.sellProfits = function (cars) {
         return x + y;
     });
 };
-var net = new DealersNet();
 
 /** Monta el objeto de red con todos los concesionarios */
 function DealersNet() {
@@ -68,3 +123,5 @@ DealersNet.prototype.validNumberPlate = function (plate) {
         return Dealership.findNumberPlate(plate);
     });
 };
+
+var net = new DealersNet();
