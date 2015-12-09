@@ -1,7 +1,7 @@
 /*jslint
     node: true,
     browser: true,
-    unparam: true,
+    unparam: true
 */
 
 // ESPACIO DE NOMBRES
@@ -37,6 +37,9 @@ function Dealership(zone) {
 }
 
 Dealership.prototype.validateData = function (dataInput) {
+
+    /** COMPROBAR validNumberPlate */
+
     var methods = [validateModel, validatePlate, validateDate, validatePrice, validatePrice];
     return dataInput.every(function (x, y) {
         return this[y](x);
@@ -66,34 +69,11 @@ function validateDate(date) {
         validDay = (day <= 31 && day > 0),
         validMonth = (globals.MONTHS.indexOf(month) % 3),
         validYear = (year > 0);
-    /*,
-        maxdays,
-        leap = !(year % 4) && ((year % 100) || !(year % 400));
-
-    switch (monthNumber) {
-    case 0:
-    case 2:
-    case 4:
-    case 6:
-    case 7:
-    case 9:
-    case 11:
-        maxdays = 31;
-        break;
-
-    case 1:
-        maxdays = leap ? 29 : 28;
-        break;
-
-    default:
-        maxdays = 30;
-    }
-*/
     if (dateTemplate.test(date) &&
         validDay &&
         !validMonth &&
         validYear &&
-        (today > lastrev) /*&& (day < maxdays)*/ ) {
+        (today > lastrev)) {
         valid = true;
     } else {
         valid = false;
@@ -118,6 +98,11 @@ Dealership.prototype.findNumberPlate = function (plate) {
         return eachCar.numberPlate === plate;
     });
 };
+
+
+/**
+ * PREGUNTAR SI TIENE QUE RECIBIR ARRAY
+ */
 
 Dealership.prototype.sellProfits = function () {
     if (this.stock.length !== 0) {

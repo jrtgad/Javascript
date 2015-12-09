@@ -1,7 +1,7 @@
 /*jslint
     node: true,
     browser: true,
-    unparam: true,
+    unparam: true
 */
 
 /*global
@@ -11,7 +11,6 @@
     car,
     stock
 */
-
 "use strict";
 
 function $(id) {
@@ -50,26 +49,6 @@ function reset() {
     }
 }
 
-function buyCar() {
-    var dataProperties = document.getElementsByClassName("inputProperties"),
-        dealer = ObjectFromSelect(),
-        err,
-        carProperties = globals.PROPERTIES.map(function (x, y) {
-            return this[y].value;
-        }, dataProperties),
-        plate = carProperties[1].replace(/-/g, "");
-    if (dealer.validateData(carProperties) && !net.validNumberPlate(plate)) {
-        dealer.buyCar.apply(dealer, carProperties);
-        createTable();
-    } else {
-        err = document.createElement("p");
-        err.id = "error";
-        err.appendChild(document.createTextNode("Datos incorrectos"));
-        buyForm();
-        $("page").appendChild(err);
-    }
-}
-
 function createTable() {
     reset();
 
@@ -98,6 +77,27 @@ function createTable() {
     filterCars();
     $("sell").addEventListener("click", sellSelectedCars, false);
 }
+
+function buyCar() {
+    var dataProperties = document.getElementsByClassName("inputProperties"),
+        dealer = ObjectFromSelect(),
+        err,
+        carProperties = globals.PROPERTIES.map(function (x, y) {
+            return this[y].value;
+        }, dataProperties),
+        plate = carProperties[1].replace(/-/g, "");
+    if (dealer.validateData(carProperties) && !net.validNumberPlate(plate)) {
+        dealer.buyCar.apply(dealer, carProperties);
+        createTable();
+    } else {
+        err = document.createElement("p");
+        err.id = "error";
+        err.appendChild(document.createTextNode("Datos incorrectos"));
+        buyForm();
+        $("page").appendChild(err);
+    }
+}
+
 
 function getSimulateProfitsButton() {
     var profitsButton = document.createElement("button"),
