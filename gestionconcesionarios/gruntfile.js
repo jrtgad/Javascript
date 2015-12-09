@@ -1,5 +1,8 @@
 /*jslint
-    node: true */
+    node: true,
+    browser: true,
+    unparam: true
+*/
 
 module.exports = function (grunt) {
     "use strict";
@@ -56,7 +59,7 @@ module.exports = function (grunt) {
             my_target: {
                 files: {
                     'lib/back-end.min.js': ['js/back-end.js'],
-		    'lib/front-end.min.js': ['js/front-end.js']
+                    'lib/front-end.min.js': ['js/front-end.js']
                 }
             }
         },
