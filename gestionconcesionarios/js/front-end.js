@@ -7,9 +7,9 @@
 /*global
     globals,
     net,
+    stock,
     Car,
-    car,
-    stock
+    document
 */
 "use strict";
 
@@ -17,7 +17,7 @@ function $(id) {
     return document.getElementById(id);
 }
 
-function ObjectFromSelect() {
+function objectFromSelect() {
     var id = $("selectDealer").selectedIndex;
     return net.Dealers[id];
 }
@@ -49,72 +49,6 @@ function reset() {
     }
 }
 
-function createTable() {
-    reset();
-
-    $("buy").innerHTML = "Buy car";
-    var table = document.createElement("table"),
-        row,
-        cell,
-        keys = Object.keys(new Car()),
-        sellButton = document.createElement("button");
-    sellButton.id = "sell";
-    sellButton.innerHTML = "Sell car";
-    table.id = "tabla";
-    row = table.appendChild(document.createElement("tr"));
-    cell = row.appendChild(document.createElement("th"));
-    cell.appendChild(document.createTextNode("selected"));
-
-    keys.forEach(function (x) {
-        cell = row.appendChild(document.createElement("th"));
-        cell.appendChild(document.createTextNode(x));
-    });
-
-    getSimulateProfitsButton();
-    $("page").appendChild(table);
-    getModelSelect();
-    $("page").appendChild(sellButton);
-    filterCars();
-    $("sell").addEventListener("click", sellSelectedCars, false);
-}
-
-function buyCar() {
-    var dataProperties = document.getElementsByClassName("inputProperties"),
-        dealer = ObjectFromSelect(),
-        err,
-        carProperties = globals.PROPERTIES.map(function (x, y) {
-            return this[y].value;
-        }, dataProperties),
-        plate = carProperties[1].replace(/-/g, "");
-    if (dealer.validateData(carProperties) && !net.validNumberPlate(plate)) {
-        dealer.buyCar.apply(dealer, carProperties);
-        createTable();
-    } else {
-        err = document.createElement("p");
-        err.id = "error";
-        err.appendChild(document.createTextNode("Datos incorrectos"));
-        buyForm();
-        $("page").appendChild(err);
-    }
-}
-
-
-function getSimulateProfitsButton() {
-    var profitsButton = document.createElement("button"),
-        divProfits = document.createElement("div"),
-        profitsPar = document.createElement("p");
-    divProfits.id = "divProfits";
-    profitsPar.id = "parprofits";
-    profitsButton.id = "buttonprofits";
-    profitsButton.value = "Simular  venta de stock";
-    profitsButton.innerHTML = "Simular  venta de stock";
-
-    divProfits.appendChild(profitsButton);
-    divProfits.appendChild(profitsPar);
-    $("page").appendChild(divProfits);
-    profitsButton.addEventListener("click", simulateSoldCars, false);
-}
-
 function insertData(propertiesArray) {
     var checkbox,
         row,
@@ -142,10 +76,9 @@ function getCarProperties(dealer, model) {
     var resultArr = dealer.stock.map(function (x) {
         if (model === "Todos") {
             return [x.model, x.numberPlate, x.lastRevDate, x.buyPrice, x.sellPrice];
-        } else {
-            if (model === x.model) {
-                return [x.model, x.numberPlate, x.lastRevDate, x.buyPrice, x.sellPrice];
-            }
+        }
+        if (model === x.model) {
+            return [x.model, x.numberPlate, x.lastRevDate, x.buyPrice, x.sellPrice];
         }
     }).filter(function (x) {
         return x !== undefined;
@@ -153,53 +86,27 @@ function getCarProperties(dealer, model) {
     insertData(resultArr);
 }
 
-function sellSelectedCars() {
-    var dealer = ObjectFromSelect(),
-        htmlCollection = document.getElementsByTagName("input"),
-        array = Array.apply(null, Array(htmlCollection.length)),
-        checkboxNumber = Object.keys(array);
+var buyCar = function () {
+    var dataProperties = document.getElementsByClassName("inputProperties"),
+        dealer = objectFromSelect(),
+        err,
+        carProperties = globals.PROPERTIES.map(function (x, y) {
+            return this[y].value;
+        }, dataProperties),
+        plate = carProperties[1].replace(/-/g, "");
+    if (dealer.validateData(carProperties) && !net.validNumberPlate(plate)) {
+        dealer.buyCar.apply(dealer, carProperties);
+        createTable();
+    } else {
+        err = document.createElement("p");
+        err.id = "error";
+        err.appendChild(document.createTextNode("Datos incorrectos"));
+        buyForm();
+        $("page").appendChild(err);
+    }
+};
 
-    checkboxNumber.forEach(function (x) {
-        x = +x;
-        if (htmlCollection[x].checked) {
-            dealer.sellCar(htmlCollection[x].id);
-        }
-    });
-
-    createTable();
-}
-
-function filterCars() {
-    var dealer = ObjectFromSelect(),
-        filteredModel = $("FilterSelect").value;
-    getCarProperties(dealer, filteredModel);
-}
-
-function getModelSelect() {
-    var model = document.createElement("select"),
-        todos = document.createElement("option");
-    model.id = "FilterSelect";
-    todos.innerHTML = "Todos";
-    todos.id = "todos";
-    model.appendChild(todos);
-
-    globals.MODELS.forEach(function (x) {
-        var option = document.createElement("option");
-        option.innerHTML = x;
-        option.value = x;
-        model.appendChild(option);
-    });
-
-    $("page").appendChild(model);
-    $("FilterSelect").addEventListener("change", filterCars, false);
-}
-
-function simulateSoldCars() {
-    var dealer = ObjectFromSelect();
-    $("parprofits").innerHTML = dealer.sellProfits();
-}
-
-function buyForm() {
+var buyForm = function () {
     reset();
 
     $("buy").innerHTML = "Clean";
@@ -239,7 +146,99 @@ function buyForm() {
     $("page").appendChild(form);
     $("form").removeChild($("model"));
     $("buyFormButton").addEventListener("click", buyCar, false);
+};
+
+
+var filterCars = function () {
+    var dealer = objectFromSelect(),
+        filteredModel = $("FilterSelect").value;
+    getCarProperties(dealer, filteredModel);
+};
+
+function getModelSelect() {
+    var model = document.createElement("select"),
+        todos = document.createElement("option");
+    model.id = "FilterSelect";
+    todos.innerHTML = "Todos";
+    todos.id = "todos";
+    model.appendChild(todos);
+
+    globals.MODELS.forEach(function (x) {
+        var option = document.createElement("option");
+        option.innerHTML = x;
+        option.value = x;
+        model.appendChild(option);
+    });
+
+    $("page").appendChild(model);
+    $("FilterSelect").addEventListener("change", filterCars, false);
 }
+
+function simulateSoldCars() {
+    var dealer = objectFromSelect();
+    $("parprofits").innerHTML = dealer.sellProfits();
+}
+
+var getSimulateProfitsButton = function () {
+    var profitsButton = document.createElement("button"),
+        divProfits = document.createElement("div"),
+        profitsPar = document.createElement("p");
+    divProfits.id = "divProfits";
+    profitsPar.id = "parprofits";
+    profitsButton.id = "buttonprofits";
+    profitsButton.value = "Simular  venta de stock";
+    profitsButton.innerHTML = "Simular  venta de stock";
+
+    divProfits.appendChild(profitsButton);
+    divProfits.appendChild(profitsPar);
+    $("page").appendChild(divProfits);
+    profitsButton.addEventListener("click", simulateSoldCars, false);
+};
+
+function sellSelectedCars() {
+    var dealer = objectFromSelect(),
+        htmlCollection = document.getElementsByTagName("input"),
+        array = Array.apply(null, new Array(htmlCollection.length)),
+        checkboxNumber = Object.keys(array);
+
+    checkboxNumber.forEach(function (x) {
+        x = +x;
+        if (htmlCollection[x].checked) {
+            dealer.sellCar(htmlCollection[x].id);
+        }
+    });
+
+    createTable();
+}
+
+var createTable = function () {
+    reset();
+
+    $("buy").innerHTML = "Buy car";
+    var table = document.createElement("table"),
+        row,
+        cell,
+        keys = Object.keys(new Car()),
+        sellButton = document.createElement("button");
+    sellButton.id = "sell";
+    sellButton.innerHTML = "Sell car";
+    table.id = "tabla";
+    row = table.appendChild(document.createElement("tr"));
+    cell = row.appendChild(document.createElement("th"));
+    cell.appendChild(document.createTextNode("selected"));
+
+    keys.forEach(function (x) {
+        cell = row.appendChild(document.createElement("th"));
+        cell.appendChild(document.createTextNode(x));
+    });
+
+    getSimulateProfitsButton();
+    $("page").appendChild(table);
+    getModelSelect();
+    $("page").appendChild(sellButton);
+    filterCars();
+    $("sell").addEventListener("click", sellSelectedCars, false);
+};
 
 function mountPage() {
     var element = document.createElement("select"),
@@ -266,10 +265,8 @@ function mountPage() {
     createTable();
 }
 
-function getData() {
+window.onload = function () {
     mountPage();
     $("selectDealer").addEventListener("change", createTable, false);
     $("buy").addEventListener("click", buyForm, false);
-}
-
-window.onload = getData;
+};
