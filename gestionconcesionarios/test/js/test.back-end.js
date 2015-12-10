@@ -97,13 +97,14 @@ describe('Check Dealership', function () {
                 dealer1.buyCar(globals.TRANSPERMODEL, "1673-kds", "12nov2007", "1250", "-1000").should.be.equal(false);
             });
 
+
             it('should return true for valid data buying car Transper 1673-kds 12nov2007 1250 2000', function () {
                 dealer1.buyCar(globals.TRANSPERMODEL, "1673-kds", "12nov2007", "1251", "2000").should.be.equal(true);
             });
         });
+
+
         context('Check inputs data', function () {
-
-
 
             /** MATRICULA */
             it('should return false for incorrect numberplate 15673-kkk', function () {
@@ -179,7 +180,7 @@ describe('Check Dealership', function () {
 
 
             /** COMPRAAAAAAAAA */
-            it('should return false for incorrect buyprice -1000', function () {
+            it('should return false for a negative buyprice', function () {
                 dealer1.validateData([globals.BERLINXMODEL, "5673-kkk", "12nov2007", "-1000", "1250"]).should.be.equal(false);
             });
 
@@ -221,7 +222,7 @@ describe('Check Dealership', function () {
                 dealer1.validateData([globals.BERLINXMODEL, "m-9587-lo", "25aug2010", "1150", "j"]).should.be.equal(false);
             });
 
-            it('should return false for incorrect sellprice -1250', function () {
+            it('should return false for a negative sellprice', function () {
                 dealer1.validateData([globals.TRANSPERMODEL, "5673-kk", "12nov2007", "1000", "-1250"]).should.be.equal(false);
             });
         });

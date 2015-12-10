@@ -82,10 +82,12 @@ Dealership.prototype.validateData = function (dataInput) {
 };
 
 Dealership.prototype.buyCar = function (model, numberPlate, lastRevDate, buyPrice, sellPrice) {
-    var i = false;
+    var i;
     if (this.validateData([model, numberPlate, lastRevDate, buyPrice, sellPrice])) {
         this.stock.push(new Car(model, numberPlate.replace(/-/g, ""), lastRevDate, buyPrice, sellPrice));
         i = true;
+    } else {
+        i = false;
     }
     return i;
 };
