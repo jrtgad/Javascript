@@ -7,12 +7,16 @@
 
 // ESPACIO DE NOMBRES
 var globals = (function (ns) {
+    ns.NORTHZONE = "Norte";
+    ns.SOUTHZONE = "Sur";
+    ns.EASTZONE = "Este";
+    ns.WESTZONE = "Oeste";
+    ns.ZONE = [ns.NORTHZONE, ns.SOUTHZONE, ns.EASTZONE, ns.WESTZONE];
     ns.BASICMODEL = "Basic";
     ns.HOMINGMODEL = "Homing";
     ns.TRANSPERMODEL = "Transper";
     ns.BERLINXMODEL = "BerlinX";
     ns.MAXIMV8MODEL = "MaximV8";
-    ns.ZONE = ["Norte", "Sur", "Este", "Oeste"];
     ns.MODELS = [ns.BASICMODEL, ns.HOMINGMODEL, ns.TRANSPERMODEL, ns.BERLINXMODEL, ns.MAXIMV8MODEL];
     ns.PROPERTIES = ["model", "numberPlate", "lastRevDate", "buyPrice", "sellPrice"];
     ns.MONTHS = "janfebmaraprmayjunjulaugsepoctnovdec";
@@ -71,17 +75,19 @@ function validateDate(date) {
     return valid;
 }
 Dealership.prototype.validateData = function (dataInput) {
-
     var methods = [validateModel, validatePlate, validateDate, validatePrice, validatePrice];
     return dataInput.every(function (x, y) {
         return this[y](x);
     }, methods);
 };
 
-
 Dealership.prototype.buyCar = function (model, numberPlate, lastRevDate, buyPrice, sellPrice) {
-
-    this.stock.push(new Car(model, numberPlate.replace(/-/g, ""), lastRevDate, buyPrice, sellPrice));
+    var i = false;
+    if (this.validateData([model, numberPlate, lastRevDate, buyPrice, sellPrice])) {
+        this.stock.push(new Car(model, numberPlate.replace(/-/g, ""), lastRevDate, buyPrice, sellPrice));
+        i = true;
+    }
+    return i;
 };
 
 Dealership.prototype.sellCar = function (numberPlate) {
@@ -99,7 +105,7 @@ Dealership.prototype.findNumberPlate = function (plate) {
 };
 
 function sanitize(price) {
-    return (price && (isNaN(price) || (price === Infinity) || (price === NaN))) ? 0 : price;
+    return (price && (isNaN(price) || (price === Infinity))) ? 0 : price;
 }
 
 Dealership.prototype.sellProfits = function () {

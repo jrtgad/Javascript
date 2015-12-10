@@ -72,7 +72,7 @@ function insertData(propertiesArray) {
     });
 }
 
-function getCarProperties(dealer, model) {
+var getCarProperties = function (dealer, model) {
     var resultArr = dealer.stock.map(function (x) {
         if (model === "Todos") {
             return [x.model, x.numberPlate, x.lastRevDate, x.buyPrice, x.sellPrice];
@@ -84,7 +84,7 @@ function getCarProperties(dealer, model) {
         return x !== undefined;
     });
     insertData(resultArr);
-}
+};
 
 var buyCar = function () {
     var dataProperties = document.getElementsByClassName("inputProperties"),
