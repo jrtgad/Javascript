@@ -1,0 +1,58 @@
+body {
+    margin          : 0 auto;
+    background-color: #a6a6a5;
+    
+    main {
+        max-width       : 960px;
+        margin          : 0 auto;
+        text-align      : center;
+        background-color: lightgray;
+        
+        h1 {
+            font-size: 4em;
+        }
+
+        .red {
+            color  : red;
+            display: inline-block;
+        }
+
+        form {
+            div {
+                display     : inline-block;
+                margin-right: 1em;
+                margin-top  : 1em;
+                
+                &.buttons {
+                    display: block;
+                    margin : 0 auto;
+                    
+                    * {
+                        display       : inline-block;
+                        margin        : 1em;
+                        vertical-align: middle;
+                        color         : black;
+                        height        : 3em;
+                        width         : 6em;
+                    }
+                }
+
+                * {
+                    display: block;
+                    height : 2.5em;
+                    color  : black;
+                }
+
+                input {
+                    height       : 2.3em;
+                    margin-bottom: 0.3em;
+                    color        : black;
+                }
+
+                select {
+                    width: 11em;
+                }
+            }
+        }
+    }
+}
