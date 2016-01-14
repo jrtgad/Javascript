@@ -32,8 +32,7 @@ module.exports = function (grunt) {
                     optimization: 2
                 },
                 files: {
-                    "css/valid.css": "less/valid.less",
-                    "css/error.css": "less/error.less"
+                    "css/screen.css": "less/screen.less"
                 }
             }
         },
@@ -60,8 +59,7 @@ module.exports = function (grunt) {
             my_target: {
                 files: {
                     'lib/back-end.min.js': ['js/back-end.js'],
-                    'lib/front-end.min.js': ['js/front-end.js'],
-                    'lib/prefix_free.min.js': ['js/prefix_free.js']
+                    'lib/front-end.min.js': ['js/front-end.js']
                 }
             }
         },
