@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*jslint
     node: true,
     browser: true,
@@ -95,6 +96,8 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['jslint', 'less', 'mochaTest', 'markdown', 'uglify']);
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> 84db364e0927043073483bfb4e923f5d48614df6
 /*jslint
     node: true,
     browser: true,
@@ -189,6 +192,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['jslint', 'mochaTest']);
     grunt.registerTask('default', ['jslint', 'less', 'mochaTest', 'markdown', 'uglify']);
+<<<<<<< HEAD
 =======
 /*jslint
     node: true,
@@ -286,4 +290,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['jslint', 'less', 'mochaTest', 'markdown', 'uglify']);
 >>>>>>> 2a33968c69530b7b13e4b43ac5fde7501a827411
 >>>>>>> 7b5ccf4274485fc2e90a9d2afcf46a3e15920030
+=======
+>>>>>>> 84db364e0927043073483bfb4e923f5d48614df6
 };
