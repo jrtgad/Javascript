@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head><!--http-equiv="refresh" content="5"-->
     <meta charset="UTF-8">
     <title>Formulario de nuevo cliente</title>
-    <link rel="stylesheet" href="css/valid.css">
+    <link rel="stylesheet" href="css/screen.css">
     <link rel="stylesheet" href="css/reset.css">
-    <script type="text/javascript" src="">
-    </script>
-    <script type=" text/javascript " src="js/front-end.js "></script>
+    <script type="text/javascript" src="js/front-end.js"></script>
 </head>
 
 <body>
@@ -16,10 +14,10 @@
 
         <h1>Formulario de nuevo cliente</h1>
 
-        <p class="red">Los campos marcados con * son obligatorios</p>
+        <p class="title">Los campos marcados con <span class="redLetter">*</span> son obligatorios</p>
 
-        <form action="../cgi-bin/.js" method="POST">
-            <div class="left">
+        <form action="../cgi-bin/server.js" method="POST">
+            <div class="divForm" id="left">
                 <span>Nombre y apellidos</span>
                 <span>Dirección de e-mail</span>
                 <span>Contraseña</span>
@@ -29,19 +27,31 @@
                 <span>Dirección domicilio</span>
                 <span>País</span>
             </div>
-            <div class="right">
-                <input type="text" name="userName" id="userName">
-                <input type="text" name="userMail" id="userMail">
-                <input type="text" name="pass" id="pass">
-                <input type="text" name="passConfirmation" id="passConfirmation">
+            <div class="divForm" id="right">
+                <input type="text" name="userName" id="userName" pattern="^[a-z]*.*[a-z]*$"
+                    placeholder="* Introduzca solo letras o guiones">
+                <input type="text" name="userMail" id="userMail"
+                placeholder="* Ej: algo@algo.resto">
+                <input type="text" name="pass" id="pass" placeholder="* Letras y nºs, mínimo 6 caracteres">
+                <input type="text" name="passConfirmation" id="passConfirmation" placeholder="* Repita su contraseña">
                 <input type="checkbox" name="siteConditions" value="1" id="siteConditions">
                 <input type="url" name="url" id="url">
                 <input type="text" name="address" id="address">
                 <select name="country" id="country">
+                    <option value="ger">Alemania</option>
+                    <option value="bel">Bélgica</option>
+                    <option value="den">Dinamarca</option>
+                    <option value="spa">España</option>
+                    <option value="fra">Francia</option>
+                    <option value="gre">Grecia</option>
+                    <option value="hol">Holanda</option>
+                    <option value="ita">Italia</option>
+                    <option value="swe">Suecia</option>
+                    <option value="uk">Reino Unido</option>
                 </select>
             </div>
             <div class="buttons">
-                <input type="reset" name="reset" value="Limpiar">
+                <input type="reset" name="reset" value="Limpiar" id="clean">
                 <input type="submit" name="send" value="Enviar">
             </div>
         </form>

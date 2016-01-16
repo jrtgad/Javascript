@@ -1,20 +1,24 @@
+@background: #818181;
+@lightBlue: #2030de;
 body {
     margin          : 0 auto;
     background-color: #a6a6a5;
-    
+
     main {
         max-width       : 960px;
         margin          : 0 auto;
         text-align      : center;
-        background-color: lightgray;
-        
+        background-color: @background;
+
         h1 {
             font-size: 4em;
+            color: @lightBlue;
         }
 
-        .red {
-            color  : red;
+        .title {
+            background-color:#a2aa6a;
             display: inline-block;
+            color: @lightBlue;
         }
 
         form {
@@ -22,37 +26,87 @@ body {
                 display     : inline-block;
                 margin-right: 1em;
                 margin-top  : 1em;
-                
+
                 &.buttons {
                     display: block;
                     margin : 0 auto;
-                    
+
                     * {
+                        text-align: center;
                         display       : inline-block;
                         margin        : 1em;
                         vertical-align: middle;
-                        color         : black;
+                        color         : @lightBlue;
                         height        : 3em;
                         width         : 6em;
                     }
                 }
 
-                * {
-                    display: block;
-                    height : 2.5em;
-                    color  : black;
-                }
 
-                input {
-                    height       : 2.3em;
-                    margin-bottom: 0.3em;
-                    color        : black;
-                }
 
-                select {
-                    width: 11em;
+                &.divForm {
+                    height: 320px;
+                    width: 252px;
+
+                    * {
+                        display: block;
+                        height : 2.5em;
+                        color  : @lightBlue;
+                        text-align: right;
+                    }
+
+                    input {
+                        display: inline-block;
+                        height       : 2.2em;
+                        margin-bottom: 0.3em;
+                        border: 1px solid black;
+
+                        &[placeholder] {
+                            text-align: center;
+                                color: red;
+                        }
+                        &[type="checkbox"]:after {
+                            content: "*";
+                        }
+                    }
+
+                    select {
+                        width: 11em;
+                        margin-bottom: 0.3em;
+                    }
                 }
             }
         }
+    }
+    .red {
+            background-color: red;
+            display: inline-block;
+            border: 1px solid DarkRed;
+            color: white !important;
+    }
+
+    .green {
+        background-color: green;
+        border: 1px solid DarkGreen;
+        color: white !important;
+    }
+
+    .reset {
+        background-color: white;
+        color: black !important;
+        &[placeholder] {
+            color: red !important;
+        }
+    }
+
+    #country {
+                position: relative;
+                left: 70px;
+                width: 7.5em;
+                text-align: center;
+    }
+
+    .redLetter {
+        color: red;
     }
 }

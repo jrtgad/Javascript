@@ -58,7 +58,6 @@ module.exports = function (grunt) {
         uglify: {
             my_target: {
                 files: {
-                    'lib/back-end.min.js': ['js/back-end.js'],
                     'lib/front-end.min.js': ['js/front-end.js']
                 }
             }

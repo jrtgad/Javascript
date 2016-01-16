@@ -61,7 +61,7 @@ module.exports = function(config) {
     //browsers: ['Firefox', 'Chrome', 'IE', 'Opera', 'PhantomJS'],
     browsers: ['SlimerJS', 'PhantomJS', 'Firefox', 'Chrome'],
 
-
+ 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
