@@ -27,12 +27,12 @@ function validateMail() {
 
 function validatePass() {
     var pattern =
-        new RegExp("^(?=.*\d).{4,8}$", "i");
+        new RegExp("^[a-zA-Z0-9.]+{6,13}$");
     validatePattern(pattern, $("pass"));
 }
 
 function confirmPass() {
-    if ($("passConfirmation").value === "") {
+    if ($("passConfirmation").value === "" || $("pass").value === "") {
         $("passConfirmation").className = "reset";
     } else {
         if ($("pass").value !== $("passConfirmation").value) {
