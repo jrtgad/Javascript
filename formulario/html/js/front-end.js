@@ -14,7 +14,6 @@ function validatePattern(pattern, input) {
     }
 }
 
-
 function validateName() {
     var pattern = new RegExp("^[a-z]*.[a-z]*$", "i");
     validatePattern(pattern, $("userName"));
@@ -27,7 +26,7 @@ function validateMail() {
 
 function validatePass() {
     var pattern =
-        new RegExp("^[a-zA-Z0-9.]+{6,13}$");
+            new RegExp("^[a-zA-Z0-9.]+{6,13}$");
     validatePattern(pattern, $("pass"));
 }
 
@@ -40,19 +39,17 @@ function confirmPass() {
         } else {
             $("passConfirmation").className = "green";
         }
-
     }
 }
 
 function checkCountry() {
     var cp = document.createElement("input"),
-        span = document.createElement("span");
+            span = document.createElement("span");
 
     cp.type = "text";
     cp.id = "postalCode";
     cp.name = "postalCode";
     span.appendChild(document.createTextNode("Código Postal"));
-
 
     if ($("country").value === "spa") {
         $("left").appendChild(span);
@@ -78,7 +75,6 @@ function validatePostalCode() {
     var pattern = new RegExp("^52[0-9]{3}$");
     validatePattern(pattern, $("postalCode"));
 }
-
 
 function addEvents() {
     $("userName").addEventListener("keyup", validateName, false);

@@ -11,34 +11,36 @@
         var e = window.StyleFix = {
             link: function (a) {
                 try {
-                    if ("stylesheet" !== a.rel || a.hasAttribute("data-noprefix")) return
+                    if ("stylesheet" !== a.rel || a.hasAttribute("data-noprefix"))
+                        return
                 } catch (b) {
                     return
                 }
                 var c = a.href || a.getAttribute("data-href"),
-                    d = c.replace(/[^\/]+$/, ""),
-                    h = (/^[a-z]{3,10}:/.exec(d) || [""])[0],
-                    l = (/^[a-z]{3,10}:\/\/[^\/]+/.exec(d) || [""])[0],
-                    g = /^([^?]*)\??/.exec(c)[1],
-                    m = a.parentNode,
-                    f = new XMLHttpRequest,
-                    n;
+                        d = c.replace(/[^\/]+$/, ""),
+                        h = (/^[a-z]{3,10}:/.exec(d) || [""])[0],
+                        l = (/^[a-z]{3,10}:\/\/[^\/]+/.exec(d) || [""])[0],
+                        g = /^([^?]*)\??/.exec(c)[1],
+                        m = a.parentNode,
+                        f = new XMLHttpRequest,
+                        n;
                 f.onreadystatechange = function () {
                     4 === f.readyState &&
-                        n()
+                            n()
                 };
                 n = function () {
                     var b = f.responseText;
                     if (b && a.parentNode && (!f.status || 400 > f.status || 600 < f.status)) {
                         b = e.fix(b, !0, a);
-                        if (d) var b = b.replace(/url\(\s*?((?:"|')?)(.+?)\1\s*?\)/gi, function (b, a, c) {
+                        if (d)
+                            var b = b.replace(/url\(\s*?((?:"|')?)(.+?)\1\s*?\)/gi, function (b, a, c) {
                                 return /^([a-z]{3,10}:|#)/i.test(c) ? b : /^\/\//.test(c) ? 'url("' + h + c + '")' : /^\//.test(c) ? 'url("' + l + c + '")' : /^\?/.test(c) ? 'url("' + g + c + '")' : 'url("' + d + c + '")'
                             }),
-                            c = d.replace(/([\\\^\$*+[\]?{}.=!:(|)])/g, "\\$1"),
-                            b = b.replace(RegExp("\\b(behavior:\\s*?url\\('?\"?)" + c, "gi"), "$1");
+                                c = d.replace(/([\\\^\$*+[\]?{}.=!:(|)])/g, "\\$1"),
+                                b = b.replace(RegExp("\\b(behavior:\\s*?url\\('?\"?)" + c, "gi"), "$1");
                         c = document.createElement("style");
                         c.textContent =
-                            b;
+                                b;
                         c.media = a.media;
                         c.disabled = a.disabled;
                         c.setAttribute("data-href", a.getAttribute("href"));
@@ -63,8 +65,8 @@
             },
             styleAttribute: function (a) {
                 var b =
-                    a.getAttribute("style"),
-                    b = e.fix(b, !1, a);
+                        a.getAttribute("style"),
+                        b = e.fix(b, !1, a);
                 a.setAttribute("style", b)
             },
             process: function () {
@@ -76,14 +78,15 @@
                 (e.fixers = e.fixers || []).splice(void 0 === b ? e.fixers.length : b, 0, a)
             },
             fix: function (a, b, c) {
-                for (var d = 0; d < e.fixers.length; d++) a = e.fixers[d](a, b, c) || a;
+                for (var d = 0; d < e.fixers.length; d++)
+                    a = e.fixers[d](a, b, c) || a;
                 return a
             },
             camelCase: function (a) {
                 return a.replace(/-([a-z])/g, function (b, a) {
                     return a.toUpperCase()
                 }).replace("-",
-                    "")
+                        "")
             },
             deCamelCase: function (a) {
                 return a.replace(/[A-Z]/g, function (b) {
@@ -108,12 +111,13 @@
     if (window.StyleFix && window.getComputedStyle) {
         var a = window.PrefixFree = {
             prefixCSS: function (b, c, d) {
-                var h = a.prefix; - 1 < a.functions.indexOf("linear-gradient") && (b = b.replace(/(\s|:|,)(repeating-)?linear-gradient\(\s*(-?\d*\.?\d*)deg/ig, function (b, a, c, d) {
+                var h = a.prefix;
+                -1 < a.functions.indexOf("linear-gradient") && (b = b.replace(/(\s|:|,)(repeating-)?linear-gradient\(\s*(-?\d*\.?\d*)deg/ig, function (b, a, c, d) {
                     return a + (c || "") + "linear-gradient(" + (90 - d) + "deg"
                 }));
                 b = e("functions", "(\\s|:|,)", "\\s*\\(", "$1" + h + "$2(", b);
                 b = e("keywords", "(\\s|:)", "(\\s|;|\\}|$)",
-                    "$1" + h + "$2$3", b);
+                        "$1" + h + "$2$3", b);
                 b = e("properties", "(^|\\{|\\s|;)", "\\s*:", "$1" + h + "$2:", b);
                 if (a.properties.length) {
                     var l = RegExp("\\b(" + a.properties.join("|") + ")(?!:)", "gi");
@@ -130,7 +134,7 @@
             },
             value: function (b, c) {
                 b =
-                    e("functions", "(^|\\s|,)", "\\s*\\(", "$1" + a.prefix + "$2(", b);
+                        e("functions", "(^|\\s|,)", "\\s*\\(", "$1" + a.prefix + "$2(", b);
                 b = e("keywords", "(^|\\s)", "(\\s|$)", "$1" + a.prefix + "$2$3", b);
                 0 <= a.valueProperties.indexOf(c) && (b = e("properties", "(^|\\s|,)", "($|\\s|,)", "$1" + a.prefix + "$2$3", b));
                 return b
@@ -147,29 +151,34 @@
         };
         (function () {
             var b = {},
-                c = [],
-                d = getComputedStyle(document.documentElement, null),
-                h = document.createElement("div").style,
-                l = function (a) {
-                    if ("-" === a.charAt(0)) {
-                        c.push(a);
-                        a = a.split("-");
-                        var d = a[1];
-                        for (b[d] = ++b[d] || 1; 3 < a.length;) a.pop(), d = a.join("-"), StyleFix.camelCase(d) in h && -1 === c.indexOf(d) && c.push(d)
-                    }
-                };
+                    c = [],
+                    d = getComputedStyle(document.documentElement, null),
+                    h = document.createElement("div").style,
+                    l = function (a) {
+                        if ("-" === a.charAt(0)) {
+                            c.push(a);
+                            a = a.split("-");
+                            var d = a[1];
+                            for (b[d] = ++b[d] || 1; 3 < a.length; )
+                                a.pop(), d = a.join("-"), StyleFix.camelCase(d) in h && -1 === c.indexOf(d) && c.push(d)
+                        }
+                    };
             if (0 < d.length)
-                for (var g = 0; g < d.length; g++) l(d[g]);
+                for (var g = 0; g < d.length; g++)
+                    l(d[g]);
             else
-                for (var e in d) l(StyleFix.deCamelCase(e));
+                for (var e in d)
+                    l(StyleFix.deCamelCase(e));
             var g = 0,
-                f, k;
-            for (k in b) d = b[k], g < d && (f = k, g = d);
+                    f, k;
+            for (k in b)
+                d = b[k], g < d && (f = k, g = d);
             a.prefix = "-" + f + "-";
             a.Prefix = StyleFix.camelCase(a.prefix);
             a.properties = [];
-            for (g = 0; g < c.length; g++) e = c[g], 0 === e.indexOf(a.prefix) && (f = e.slice(a.prefix.length), StyleFix.camelCase(f) in
-                h || a.properties.push(f));
+            for (g = 0; g < c.length; g++)
+                e = c[g], 0 === e.indexOf(a.prefix) && (f = e.slice(a.prefix.length), StyleFix.camelCase(f) in
+                        h || a.properties.push(f));
             !("Ms" != a.Prefix || "transform" in h || "MsTransform" in h) && "msTransform" in h && a.properties.push("transform", "transform-origin");
             a.properties.sort()
         })();
@@ -198,7 +207,7 @@
                 }
             };
             c["repeating-linear-gradient"] =
-                c["repeating-radial-gradient"] = c["radial-gradient"] = c["linear-gradient"];
+                    c["repeating-radial-gradient"] = c["radial-gradient"] = c["linear-gradient"];
             var d = {
                 initial: "color",
                 "zoom-in": "cursor",
@@ -218,15 +227,16 @@
             a.functions = [];
             a.keywords = [];
             var h = document.createElement("div").style,
-                e;
+                    e;
             for (e in c) {
                 var g = c[e],
-                    k = g.property,
-                    g = e + "(" + g.params + ")";
+                        k = g.property,
+                        g = e + "(" + g.params + ")";
                 !b(g, k) &&
-                    b(a.prefix + g, k) && a.functions.push(e)
+                        b(a.prefix + g, k) && a.functions.push(e)
             }
-            for (var f in d) k = d[f], !b(f, k) && b(a.prefix + f, k) && a.keywords.push(f)
+            for (var f in d)
+                k = d[f], !b(f, k) && b(a.prefix + f, k) && a.keywords.push(f)
         })();
         (function () {
             function b(a) {
@@ -234,26 +244,27 @@
                 return !!e.sheet.cssRules.length
             }
             var c = {
-                    ":read-only": null,
-                    ":read-write": null,
-                    ":any-link": null,
-                    "::selection": null
-                },
-                d = {
-                    keyframes: "name",
-                    viewport: null,
-                    document: 'regexp(".")'
-                };
+                ":read-only": null,
+                ":read-write": null,
+                ":any-link": null,
+                "::selection": null
+            },
+            d = {
+                keyframes: "name",
+                viewport: null,
+                document: 'regexp(".")'
+            };
             a.selectors = [];
             a.atrules = [];
             var e = k.appendChild(document.createElement("style")),
-                l;
+                    l;
             for (l in c) {
                 var g = l + (c[l] ? "(" + c[l] + ")" : "");
                 !b(g) && b(a.prefixSelector(g)) && a.selectors.push(l)
             }
-            for (var m in d) g =
-                m + " " + (d[m] || ""), !b("@" + g) && b("@" + a.prefix + g) && a.atrules.push(m);
+            for (var m in d)
+                g =
+                        m + " " + (d[m] || ""), !b("@" + g) && b("@" + a.prefix + g) && a.atrules.push(m);
             k.removeChild(e)
         })();
         a.valueProperties = ["transition", "transition-property"];

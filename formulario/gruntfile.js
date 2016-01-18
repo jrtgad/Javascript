@@ -1,8 +1,8 @@
 /*jslint
-    node: true,
-    browser: true,
-    unparam: true
-*/
+ node: true,
+ browser: true,
+ unparam: true
+ */
 
 module.exports = function (grunt) {
     "use strict";
