@@ -1,8 +1,0 @@
-Usuario: Ana simón
-E-mail: a@b.com
-Contraseña: e7b60a20cc8cb7249e8df3db2fc23f60eed1b22b
-URL: 
-Direccion: 
-Pais: empty
-Codigo postal: 
-Comentarios: 
