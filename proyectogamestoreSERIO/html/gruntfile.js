@@ -32,7 +32,7 @@ module.exports = function (grunt) {
                     optimization: 2
                 },
                 files: {
-                    "html/css/styles.css": "html/less/styles.less"
+                    "css/screen.css": "less/screen.less"
                 }
             }
         },
@@ -44,7 +44,7 @@ module.exports = function (grunt) {
                     quiet: false,
                     clearRequireCache: false
                 },
-                src: ['test/**/*.js']
+                src: ['html/test/**/*.js']
             }
         },
         markdown: {
@@ -58,7 +58,7 @@ module.exports = function (grunt) {
         uglify: {
             my_target: {
                 files: {
-                    'html/lib/front-end.min.js': ['html/js/front-end.js']
+                    'lib/front-end.min.js': ['js/front-end.js']
                 }
             }
         },
