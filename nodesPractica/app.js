@@ -8,8 +8,8 @@ function addCharset() {
     meta.setAttribute("charset", "utf-8");
     document.head.insertBefore(meta, document.head.firstChild);
 }
-
 addCharset();
+
 window.onload = function () {
     "use strict";
 
@@ -17,22 +17,30 @@ window.onload = function () {
         ns.BODY = document.body;
         ns.INPUTS = ["valor", "clase"];
         ns.ADD_BUTTON = document.createElement("input");
+        ns.SELECT = document.getElementsByTagName("select")[0];
         ns.PLACEHOLDER = "Introduzca ";
         ns.TITLE = "Manipulación de documentos a través del DOM";
-        ns.NO_INDEX_SELECTED = document.createElement("h3");
-        ns.NO_INDEX_SELECTED.innerHTML = "No hay ninguna clase seleccionada";
+        ns.NO_INDEX_SELECTED = "No hay ninguna clase seleccionada";
+        ns.INPUT_WITHOUT_VALUE = "Tiene que rellenar ambos campos";
         ns.CLASSES = [];
 
         ns.insertToClassArray = function (element) {
             ns.CLASSES.push(element);
         }
 
-        ns.selectFirst = function (element) {
-            return document.querySelector(element);
+        ns.selectFirst = function (tag) {
+            return document.querySelector(tag);
         }
 
-        ns.selectAll = function (element) {
-            return document.querySelectorAll(element);
+        ns.selectAll = function (tag) {
+            //Array.from();
+            //$$() DEVUELVE ARRAY
+            return Array.prototype.slice.call(document.querySelectorAll(tag));
+        }
+        ns.createError = function (msg) {
+            var h3 = document.createElement("h3");
+            h3.innerHTML = msg;
+            ns.selectFirst("form").appendChild(h3);
         }
 
         return ns;
@@ -44,19 +52,25 @@ window.onload = function () {
         document.body.appendChild(h1);
     }
 
+    function removeDeleteClassError() {
+        ns.selectFirst("h3") ? ns.selectFirst("h3").remove() : 0;
+    }
+
     function insertIntoList() {
         var valueInput = document.forms[0].children[0].value,
             classInput = document.forms[0].children[1].value,
             ul = document.getElementsByTagName("ul")[0],
             li = document.createElement("li");
-        if (valueInput !== "" && classInput !== "") {
+        if (valueInput !== "" || classInput !== "") {
             li.appendChild(document.createTextNode(valueInput));
             li.className = classInput;
+            li.width = "auto";
             ul.appendChild(li);
             appendOption(li, ns.selectFirst("select"));
+            ns.insertToClassArray(classInput);
+        } else {
+            ns.createError(ns.INPUT_WITHOUT_VALUE);
         }
-
-        ns.insertToClassArray(classInput);
         document.forms[0].reset();
     }
 
@@ -77,16 +91,15 @@ window.onload = function () {
         createSelectAndList();
     }
 
+    function deleteOption() {
+        ns.selectFirst("." + ns.SELECT.children[selected].value).remove();
+        select.removeChild(select.children[selected]);
+        changeBackgroundOfListItem();
+    }
+
     function deleteSelectedOption() {
-        var select = document.getElementsByTagName("select")[0],
-            selected = select.selectedIndex;
-        if (selected !== -1) {
-            ns.selectFirst("." + select.children[selected].value).remove();
-            select.removeChild(select.children[selected]);
-            changeBackgroundOfListItem();
-        } else {
-            ns.selectFirst("form").appendChild(ns.NO_INDEX_SELECTED);
-        }
+        var selected = ns.selectFirst("select").selectedIndex;
+        selected !== -1 ? deleteOption(selected) : ns.createError(ns.NO_INDEX_SELECTED);
     }
 
     function createDeleteButton() {
@@ -96,15 +109,6 @@ window.onload = function () {
         ns.selectFirst("div").appendChild(deleteBtn);
         ns.selectFirst("div").lastChild.addEventListener("click", deleteSelectedOption, false);
     }
-
-
-
-    //FORMA 1
-    function removeDeleteClassError() {
-        ns.selectFirst("h3") ? ns.selectFirst("h3").remove() : 0;
-    }
-
-    //FORMA 2 - DESHABILITAR BOTON
 
     function createSelectAndList() {
         var select = document.createElement("select"),
@@ -126,13 +130,13 @@ window.onload = function () {
     }
 
     function changeBackgroundOfListItem() {
-        var listItems = Array.prototype.slice.call(ns.selectAll("li")),
+        var listItems = ns.selectAll("li"),
             selected = ns.selectFirst("select").selectedIndex,
-            item = ns.selectFirst("select").children[selected].value;
+            addedClass = ns.selectFirst("select").children[selected].value;
         listItems.forEach(function (x) {
             x.style.backgroundColor = "white";
         });
-        ns.selectFirst("li." + item).style.backgroundColor = "yellow";
+        ns.selectFirst("li." + addedClass).style.backgroundColor = "yellow";
     }
 
     setTitle();
