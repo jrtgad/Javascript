@@ -1,55 +1,71 @@
-//document.writeln("");
-var doctype = document.implementation.createDocumentType('html', '', '');
-document.insertBefore(doctype, document.firstChild);
-
-
-function addCharset() {
-    var meta = document.createElement("meta");
-    meta.setAttribute("charset", "utf-8");
-    document.head.insertBefore(meta, document.head.firstChild);
-}
-addCharset();
-
 window.onload = function () {
     "use strict";
+    //document.writeln("");
+    var doctype = document.implementation.createDocumentType('html', '', '');
+    document.insertBefore(doctype, document.firstChild);
+
+    function addCharset() {
+        var meta = document.createElement("meta");
+        meta.setAttribute("charset", "utf-8");
+        document.head.insertBefore(meta, document.head.firstChild);
+    }
 
     var ns = (function (ns) {
         ns.BODY = document.body;
         ns.INPUTS = ["valor", "clase"];
         ns.ADD_BUTTON = document.createElement("input");
         ns.SELECT = document.getElementsByTagName("select")[0];
+        //ns.UL = document.querySelector("ul");
         ns.PLACEHOLDER = "Introduzca ";
         ns.TITLE = "Manipulación de documentos a través del DOM";
         ns.NO_INDEX_SELECTED = "No hay ninguna clase seleccionada";
         ns.INPUT_WITHOUT_VALUE = "Tiene que rellenar ambos campos";
-        ns.CLASSES = [];
+        ns.Objects = [];
 
-        ns.insertToClassArray = function (element) {
-            ns.CLASSES.push(element);
+        ns.create = function (tag, text, clase, parent) {
+            var element = document.createElement(tag);
+            element.appendChild(document.createTextNode(text));
+            element.className = clase;
+            parent.appendChild(element);
         }
+        ns.save = function (element) {
+            ns.Objects.push(element);
+        };
 
         ns.selectFirst = function (tag) {
             return document.querySelector(tag);
-        }
+        };
 
         ns.selectAll = function (tag) {
             //Array.from();
             //$$() DEVUELVE ARRAY
             return Array.prototype.slice.call(document.querySelectorAll(tag));
-        }
+        };
         ns.createError = function (msg) {
             var h3 = document.createElement("h3");
             h3.innerHTML = msg;
             ns.selectFirst("form").appendChild(h3);
-        }
+        };
+
+        ns.reloadList = function () {
+            array.from(ns.LIST.children).forEach(function (x) {
+                x.remove();
+            })
+            ns.Objects.forEach(function (x) {
+                ns.create("li", x.valor, x.clase, document.getElementsByTagName("ul")[0]);
+            });
+        };
 
         return ns;
     }({}));
 
+    function Element(valor, clase) {
+        this.valor = valor;
+        this.clase = clase;
+    }
+
     function setTitle() {
-        var h1 = document.createElement("h1");
-        h1.appendChild(document.createTextNode(ns.TITLE));
-        document.body.appendChild(h1);
+        ns.create("h1", ns.TITLE, ns.BODY);
     }
 
     function removeDeleteClassError() {
@@ -58,16 +74,14 @@ window.onload = function () {
 
     function insertIntoList() {
         var valueInput = document.forms[0].children[0].value,
-            classInput = document.forms[0].children[1].value,
-            ul = document.getElementsByTagName("ul")[0],
-            li = document.createElement("li");
-        if (valueInput !== "" || classInput !== "") {
-            li.appendChild(document.createTextNode(valueInput));
-            li.className = classInput;
-            li.width = "auto";
-            ul.appendChild(li);
-            appendOption(li, ns.selectFirst("select"));
-            ns.insertToClassArray(classInput);
+            classInput = document.forms[0].children[1].value;
+
+        if (valueInput !== "" && classInput !== "") {
+            ns.save(new Element(valueInput, classInput));
+
+            /*ul = document.getElementsByTagName("ul")[0],
+        li = document.createElement("li");*/
+            ns.reloadList();
         } else {
             ns.createError(ns.INPUT_WITHOUT_VALUE);
         }
@@ -138,10 +152,21 @@ window.onload = function () {
         });
         ns.selectFirst("li." + addedClass).style.backgroundColor = "yellow";
     }
-
+    addCharset();
     setTitle();
     createClassForm();
     ns.selectFirst("form").addEventListener("click", removeDeleteClassError, false);
     ns.selectFirst("select").addEventListener("change", removeDeleteClassError, false);
     ns.selectFirst("select").addEventListener("change", changeBackgroundOfListItem, false);
-};
+
+    //Mutation observer
+    var config = {
+            attributes: false,
+            childList: true,
+            characterData: false
+        },
+        observer = new MutationObserver(function () {
+            ns.reloadList();
+        });
+    observer.observe(document.querySelector("select"), config);
+}
