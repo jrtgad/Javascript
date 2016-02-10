@@ -1,14 +1,5 @@
 window.onload = function () {
     "use strict";
-    //document.writeln("");
-    var doctype = document.implementation.createDocumentType('html', '', '');
-    document.insertBefore(doctype, document.firstChild);
-
-    function addCharset() {
-        var meta = document.createElement("meta");
-        meta.setAttribute("charset", "utf-8");
-        document.head.insertBefore(meta, document.head.firstChild);
-    }
 
     var ns = (function (ns) {
         ns.BODY = document.body;
@@ -23,9 +14,10 @@ window.onload = function () {
         ns.Objects = [];
 
         ns.create = function (tag, text, clase, parent) {
+            //console.log(tag, text, clase, parent);
             var element = document.createElement(tag);
-            element.appendChild(document.createTextNode(text));
-            element.className = clase;
+            text ? element.appendChild(document.createTextNode(text)) : 0;
+            clase ? element.className = clase : 0;
             parent.appendChild(element);
         }
         ns.save = function (element) {
@@ -42,17 +34,19 @@ window.onload = function () {
             return Array.prototype.slice.call(document.querySelectorAll(tag));
         };
         ns.createError = function (msg) {
-            var h3 = document.createElement("h3");
+            ns.create("h3", ns.INPUT_WITHOUT_VALUE, "", ns.selectFirst("form"));
+            /*var h3 = document.createElement("h3");
             h3.innerHTML = msg;
-            ns.selectFirst("form").appendChild(h3);
+            ns.selectFirst("form").appendChild(h3);*/
         };
 
         ns.reloadList = function () {
-            array.from(ns.LIST.children).forEach(function (x) {
+            Array.from(ns.selectFirst("ul").children).forEach(function (x) {
                 x.remove();
             })
             ns.Objects.forEach(function (x) {
                 ns.create("li", x.valor, x.clase, document.getElementsByTagName("ul")[0]);
+                ns.create("option", x.clase, "", ns.selectFirst("select"));
             });
         };
 
@@ -65,11 +59,11 @@ window.onload = function () {
     }
 
     function setTitle() {
-        ns.create("h1", ns.TITLE, ns.BODY);
+        ns.create("h1", ns.TITLE, "", ns.BODY);
     }
 
     function removeDeleteClassError() {
-        ns.selectFirst("h3") ? ns.selectFirst("h3").remove() : 0;
+        ns.selectFirst("h3") ? ns.selectFirst("p").remove() : 0;
     }
 
     function insertIntoList() {
@@ -78,9 +72,8 @@ window.onload = function () {
 
         if (valueInput !== "" && classInput !== "") {
             ns.save(new Element(valueInput, classInput));
-
             /*ul = document.getElementsByTagName("ul")[0],
-        li = document.createElement("li");*/
+            li = document.createElement("li");*/
             ns.reloadList();
         } else {
             ns.createError(ns.INPUT_WITHOUT_VALUE);
@@ -103,12 +96,15 @@ window.onload = function () {
         form.appendChild(ns.ADD_BUTTON);
         ns.BODY.appendChild(form);
         createSelectAndList();
+        Array.from(ns.selectAll("input")).forEach(function (x) {
+            console.log(x);
+        });
     }
 
     function deleteOption() {
         ns.selectFirst("." + ns.SELECT.children[selected].value).remove();
         select.removeChild(select.children[selected]);
-        changeBackgroundOfListItem();
+        //changeBackgroundOfListItem();
     }
 
     function deleteSelectedOption() {
@@ -143,7 +139,7 @@ window.onload = function () {
         parent.appendChild(option);
     }
 
-    function changeBackgroundOfListItem() {
+    /*function changeBackgroundOfListItem() {
         var listItems = ns.selectAll("li"),
             selected = ns.selectFirst("select").selectedIndex,
             addedClass = ns.selectFirst("select").children[selected].value;
@@ -151,13 +147,12 @@ window.onload = function () {
             x.style.backgroundColor = "white";
         });
         ns.selectFirst("li." + addedClass).style.backgroundColor = "yellow";
-    }
-    addCharset();
+    }*/
     setTitle();
     createClassForm();
     ns.selectFirst("form").addEventListener("click", removeDeleteClassError, false);
     ns.selectFirst("select").addEventListener("change", removeDeleteClassError, false);
-    ns.selectFirst("select").addEventListener("change", changeBackgroundOfListItem, false);
+    //ns.selectFirst("select").addEventListener("change", changeBackgroundOfListItem, false);
 
     //Mutation observer
     var config = {
