@@ -1,4 +1,4 @@
-var SAMPLETYPE = 'txt'; 
+var SAMPLETYPE = 'json'; 
 var FILESDIR = 'files'; 
 
 function remotefile(resource, type) {
